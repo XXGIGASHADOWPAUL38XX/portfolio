@@ -1,0 +1,84 @@
+---
+import { render } from "astro:content";
+import type { Projects, Site } from "../../../lib/content";
+import { formatIndex, sectionNumber } from "../../../lib/sections";
+import Section from "../../layout/Section.astro";
+import Button from "../../ui/Button.astro";
+import SectionHeading from "../../ui/SectionHeading.astro";
+import EffectGraph from "./EffectGraph.astro";
+import LedSpectrum from "./LedSpectrum.astro";
+
+/** 01 · Projet à la une : présentation, graphe d'effet, spectre et étapes. */
+interface Props {
+  project: Projects["featured"];
+  labels: Site["aLaUne"];
+}
+
+const { project, labels } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const headingId = "a-la-une-titre";
+---
+
+<Section id="a-la-une" aria-labelledby={headingId}>
+  <SectionHeading number={sectionNumber("a-la-une")} eyebrow={labels.surtitre} title={data.titre} id={headingId}>
+    <Fragment slot="accent">{data.titreAccent}</Fragment>
+  </SectionHeading>
+
+  <div class="grid grid-cols-[minmax(0,5fr)_minmax(0,7fr)] items-start gap-12 max-xl:grid-cols-1">
+    <div class="flex min-w-0 flex-col items-start gap-6">
+      <div class="text-body-lg text-ink-muted [&_p]:m-0 [&_strong]:font-normal [&_strong]:text-ink">
+        <Content />
+      </div>
+      <dl class="m-0 grid grid-cols-2 gap-5 self-stretch border-y border-line py-5">
+        {
+          data.chiffres.map((chiffre) => (
+            <div class="flex flex-col gap-1">
+              <dt class="font-mono text-mono-xs text-ink-subtle">{chiffre.libelle}</dt>
+              <dd class="m-0 font-pixel text-pixel-stat text-signal-text">{chiffre.valeur}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="font-mono text-mono-sm text-ink-subtle">{data.stack.join(" · ")}</p>
+      {
+        (data.liens.etudeDeCas || data.liens.code || data.liens.video) && (
+          <div class="flex flex-wrap gap-4">
+            {data.liens.etudeDeCas && (
+              <Button href={data.liens.etudeDeCas} variant="secondary" icon="arrow">
+                {labels.etudeDeCas}
+              </Button>
+            )}
+            {data.liens.code && (
+              <Button href={data.liens.code} variant="ghost" icon="external">
+                {labels.code}
+              </Button>
+            )}
+            {data.liens.video && (
+              <Button href={data.liens.video} variant="ghost" icon="external">
+                {labels.video}
+              </Button>
+            )}
+          </div>
+        )
+      }
+    </div>
+    <EffectGraph legend={data.graphe.legende} description={data.graphe.description} nodes={data.graphe.noeuds} />
+  </div>
+
+  <LedSpectrum labels={data.spectre} />
+
+  <ol class="m-0 grid list-none grid-cols-4 gap-6 p-0 max-xl:grid-cols-2 max-xs:grid-cols-1">
+    {
+      data.etapes.map((etape, i) => (
+        <li class="flex flex-col gap-2 border-t border-line pt-4">
+          <span class="font-pixel text-pixel-step text-signal-text">
+            {formatIndex(i)} {etape.titre}
+          </span>
+          <span class="text-step text-ink-muted">{etape.texte}</span>
+          <span class="font-mono text-mono-xs text-ink-subtle">{etape.stack}</span>
+        </li>
+      ))
+    }
+  </ol>
+</Section>

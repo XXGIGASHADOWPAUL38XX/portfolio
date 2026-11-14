@@ -28,8 +28,8 @@ export function createSchemas(field: Fields) {
       photoAlt: field.text(),
     }),
     liens: z.object({
-      github: field.url(),
-      linkedin: field.url(),
+      github: z.object({ libelle: field.text(), url: field.url() }),
+      linkedin: z.object({ libelle: field.text(), url: field.url() }),
       cv: field.file("public"),
     }),
     navigation: z.object({

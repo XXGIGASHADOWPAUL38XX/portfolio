@@ -1,0 +1,19 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+/** Section de page : ancre, padding vertical de 96 px, conteneur de 1200 px. */
+interface Props extends Omit<HTMLAttributes<"section">, "class"> {
+  id: string;
+  /** Écart entre l'en-tête et le contenu (48 px par défaut). */
+  gap?: "default" | "none";
+  class?: string;
+}
+
+const { gap = "default", class: className, ...attrs } = Astro.props;
+---
+
+<section class:list={["box-border px-6 py-24", className]} {...attrs}>
+  <div class:list={["mx-auto flex max-w-page flex-col", gap === "default" && "gap-12"]}>
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,67 @@
+---
+import { join } from "node:path";
+import { isPlaceholder } from "../../lib/content-fields";
+import { loadPortraitSprite } from "../../lib/portrait";
+import { anchor, TOP_ID } from "../../lib/sections";
+import { CORNER_BOTTOM_RIGHT, CORNER_TOP_LEFT } from "../../lib/sprites";
+import type { Site } from "../../lib/content";
+import SubNav from "../layout/SubNav.astro";
+import Button from "../ui/Button.astro";
+import PixelArt from "../ui/PixelArt.astro";
+import TextLink from "../ui/TextLink.astro";
+
+interface Props {
+  site: Site;
+  navLinks: { label: string; href: string }[];
+}
+
+/** Grille du portrait : 41 × 47 pixels tiennent dans le cadre de 480 px de haut. */
+const PORTRAIT_GRID = { columns: 41, rows: 47 };
+
+const { site, navLinks } = Astro.props;
+const { identite, liens, hero, navigation } = site;
+const portrait = isPlaceholder(identite.photo)
+  ? null
+  : await loadPortraitSprite(join(process.cwd(), identite.photo), PORTRAIT_GRID);
+---
+
+<section id={TOP_ID} aria-label={hero.libelle} class="relative box-border overflow-hidden px-6 py-(--hero-padding)">
+  <SubNav label={navigation.sousNavigation} links={navLinks} />
+  <div
+    class="relative mx-auto grid max-w-page grid-cols-[minmax(0,7fr)_minmax(0,4fr)] items-center gap-12 max-lg:grid-cols-1"
+  >
+    <div class="flex flex-col items-start gap-7">
+      <h1 class="font-pixel text-pixel-name font-bold text-ink uppercase">
+        {identite.prenom}<br />{identite.nom}
+      </h1>
+      <p class="max-w-lead text-lead text-ink-muted">
+        <span class="text-ink">{identite.intitule}</span>&nbsp;{identite.accroche}
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <Button href={anchor("a-la-une")} icon="arrow">{hero.boutonProjets}</Button>
+        <Button href={liens.cv} variant="secondary" download>{hero.boutonCv}</Button>
+      </div>
+      <div class="flex flex-wrap gap-x-6 gap-y-2">
+        <TextLink href={liens.github.url} icon="external">{liens.github.libelle}</TextLink>
+        <TextLink href={liens.linkedin.url} icon="external">{liens.linkedin.libelle}</TextLink>
+        <TextLink href={`mailto:${identite.email}`}>{identite.email}</TextLink>
+      </div>
+    </div>
+    <figure class="flex flex-col gap-4">
+      <div
+        class="relative flex h-(--portrait-height) items-center justify-center border border-line bg-surface max-lg:h-(--portrait-height-sm)"
+      >
+        <PixelArt sprite={CORNER_TOP_LEFT} class="absolute -top-3 -left-3" />
+        <PixelArt sprite={CORNER_BOTTOM_RIGHT} class="absolute -right-3 -bottom-3" />
+        {
+          portrait ? (
+            <PixelArt sprite={portrait} label={identite.photoAlt} class="h-full w-auto max-w-full" />
+          ) : (
+            <p class="max-w-67 p-6 text-center font-mono text-mono-sm text-ink-subtle">{identite.photo}</p>
+          )
+        }
+      </div>
+      <figcaption class="font-pixel text-pixel-label text-ink-subtle">{identite.legende}</figcaption>
+    </figure>
+  </div>
+</section>

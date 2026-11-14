@@ -1,0 +1,76 @@
+---
+import { MINI_SPECTRUM } from "../../../lib/led";
+import PixelLine from "../../ui/PixelLine.astro";
+
+/**
+ * Graphe d'effet en serpentin : source → analyse → transformation → couleur → sortie,
+ * sur deux colonnes reliées par des fils de pixels ; une seule colonne ≤ 640 px.
+ */
+interface Props {
+  legend: string;
+  description: string;
+  nodes: { categorie: string; titre: string; detail?: string | undefined; spectre: boolean }[];
+}
+
+const { legend, description, nodes } = Astro.props;
+
+/** Zone de grille de chaque nœud, dans l'ordre du flux. */
+const NODE_AREAS = ["[grid-area:src]", "[grid-area:ana]", "[grid-area:tra]", "[grid-area:col]", "[grid-area:out]"];
+const lastIndex = nodes.length - 1;
+---
+
+<figure
+  aria-label={description}
+  class="box-border flex min-w-0 flex-col gap-6 rounded-lg border border-line bg-surface bg-[radial-gradient(var(--line)_1px,transparent_1px)] bg-size-[calc(2*var(--pixel-pitch))_calc(2*var(--pixel-pitch))] p-8 max-xs:p-5"
+>
+  <figcaption class="self-end font-pixel text-pixel-caption text-ink-subtle">{legend}</figcaption>
+  <div
+    class="grid grid-cols-[minmax(0,1fr)_var(--wire-width)_minmax(0,1fr)] grid-rows-[auto_var(--wire-gap)_auto_var(--wire-gap)_auto] items-start [grid-template-areas:'src_w1_ana'_'._._w2'_'col_w3_tra'_'w4_._.'_'out_._.'] max-xs:grid-cols-[minmax(0,1fr)] max-xs:grid-rows-[auto_var(--wire-gap)_auto_var(--wire-gap)_auto_var(--wire-gap)_auto_var(--wire-gap)_auto] max-xs:[grid-template-areas:'src'_'w1'_'ana'_'w2'_'tra'_'w3'_'col'_'w4'_'out']"
+  >
+    {
+      nodes.map((node, i) => (
+        <div
+          class:list={[
+            "min-w-0 self-stretch rounded-node border bg-bg font-mono",
+            i === lastIndex ? "border-signal-edge" : "border-line-strong",
+            NODE_AREAS[i],
+          ]}
+        >
+          <div
+            class:list={[
+              "flex items-center gap-2 border-b border-line px-3 py-2 text-mono-xs before:size-(--pixel-unit) before:shrink-0 before:bg-signal",
+              i === lastIndex ? "text-signal-text" : "text-ink-muted",
+            ]}
+          >
+            {node.categorie}
+          </div>
+          <div class="flex flex-col gap-2 p-3 text-label text-ink">
+            {node.titre}
+            {node.detail && <span class="text-mono-xs text-ink-muted">{node.detail}</span>}
+            {node.spectre && (
+              <span aria-hidden="true" class="flex h-10 items-end gap-0.5 overflow-hidden">
+                {MINI_SPECTRUM.map((cells) => (
+                  <PixelLine direction="column" cells={cells} />
+                ))}
+              </span>
+            )}
+          </div>
+        </div>
+      ))
+    }
+    <div aria-hidden="true" class="flex self-stretch pt-3 [grid-area:w1] max-xs:justify-center max-xs:pt-0">
+      <PixelLine direction="row" class="max-xs:hidden" />
+      <PixelLine direction="column" class="xs:hidden" />
+    </div>
+    <div aria-hidden="true" class="flex justify-center self-stretch [grid-area:w2]">
+      <PixelLine direction="column" />
+    </div>
+    <div aria-hidden="true" class="flex self-stretch pt-3 [grid-area:w3] max-xs:justify-center max-xs:pt-0">
+      <PixelLine direction="row" class="max-xs:hidden" />
+      <PixelLine direction="column" class="xs:hidden" />
+    </div>
+    <div aria-hidden="true" class="flex justify-center self-stretch [grid-area:w4]">
+      <PixelLine direction="column" />
+    </div>
+  </div>
+</figure>

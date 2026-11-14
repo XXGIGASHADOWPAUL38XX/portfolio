@@ -1,0 +1,22 @@
+---
+/** Navigation en pastilles, affichée sous la nav quand ses liens sont masqués (≤ 720 px). */
+interface Props {
+  label: string;
+  links: { label: string; href: string }[];
+}
+
+const { label, links } = Astro.props;
+---
+
+<nav aria-label={label} class="relative mb-6 hidden flex-nowrap gap-2 overflow-x-auto bg-bg p-2 max-sm:flex">
+  {
+    links.map((link) => (
+      <a
+        href={link.href}
+        class="inline-flex min-h-11 items-center rounded-pill border border-line-strong px-3.5 font-mono text-mono-sm whitespace-nowrap text-ink no-underline"
+      >
+        {link.label}
+      </a>
+    ))
+  }
+</nav>
