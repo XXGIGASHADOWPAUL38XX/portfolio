@@ -72,8 +72,18 @@ content:
         label: Liens
         type: object
         fields:
-          - { name: github, label: GitHub, component: lien }
-          - { name: linkedin, label: LinkedIn, component: lien }
+          - name: github
+            label: GitHub
+            type: object
+            fields:
+              - { name: libelle, label: Libellé, component: texte }
+              - { name: url, label: Adresse, component: lien }
+          - name: linkedin
+            label: LinkedIn
+            type: object
+            fields:
+              - { name: libelle, label: Libellé, component: texte }
+              - { name: url, label: Adresse, component: lien }
           - { name: cv, label: CV (PDF), type: file, required: true, options: { media: documents, extensions: [pdf] } }
       - name: navigation
         label: Navigation

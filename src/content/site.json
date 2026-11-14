@@ -17,8 +17,8 @@
     "photoAlt": "Portrait de Tristan Ginet"
   },
   "liens": {
-    "github": "[GitHub]",
-    "linkedin": "[LinkedIn]",
+    "github": { "libelle": "GitHub", "url": "[URL du profil GitHub]" },
+    "linkedin": { "libelle": "LinkedIn", "url": "[URL du profil LinkedIn]" },
     "cv": "[CV]"
   },
   "navigation": {
