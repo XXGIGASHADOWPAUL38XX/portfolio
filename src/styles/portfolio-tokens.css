@@ -1,0 +1,51 @@
+/*
+ * Tokens du portfolio : l'échelle typographique de Signal (tokens.json → type)
+ * et les grandeurs propres à la maquette « Accueil — Tristan Ginet ».
+ * Les couleurs, espacements et rayons de Signal sont dans signal-tokens.css.
+ */
+:root {
+  /* Mono — interface */
+  --type-eyebrow: 12px; --type-eyebrow-lh: 16px; --tracking-eyebrow: 0.1em;
+  --type-mono-sm: 13px; --type-mono-sm-lh: 20px;
+  --type-label: 14px; --type-label-lh: 20px;
+  --type-cta: 15px; --type-cta-lh: 20px;
+  --type-mail: clamp(20px, 5vw, 32px); --type-mail-lh: 1.25;
+
+  /* Sans — texte */
+  --type-body-sm: 14px; --type-body-sm-lh: 20px;
+  --type-step: 15px; --type-step-lh: 22px;
+  --type-body: 16px; --type-body-lh: 24px;
+  --type-body-lg: 18px; --type-body-lg-lh: 28px;
+  --type-entity: 18px; --type-entity-lh: 26px;
+  --type-lead: 20px; --type-lead-lh: 30px;
+  --type-tile-title: 24px; --type-tile-title-lg: clamp(26px, 4vw, 36px); --type-tile-title-lh: 1.17;
+  --type-stage-title: 28px; --type-stage-title-lh: 34px;
+  --type-h2: clamp(32px, 6vw, 48px); --type-h2-lh: 1.1; --tracking-h2: -0.015em;
+
+  /* Pixel — nom, numéros, chiffres, légendes */
+  --type-pixel-caption: 14px; --type-pixel-caption-lh: 18px;
+  --type-pixel-label: 16px; --type-pixel-label-lh: 20px;
+  --type-pixel-period: 20px; --type-pixel-period-lh: 28px;
+  --type-pixel-step: 24px;
+  --type-pixel-stat: 32px;
+  --type-pixel-number: 48px;
+  --type-pixel-number-lg: 64px;
+  --type-pixel-name: clamp(40px, 8.5vw, 112px);
+  --type-pixel-signature: clamp(40px, 9vw, 120px);
+  --type-pixel-contact: clamp(40px, 11vw, 120px);
+  --type-pixel-display-lh: 0.9;
+
+  /* Mise en page */
+  --radius-node: 12px;
+  --lead-width: 560px;
+  --pitch-width: 52ch;
+  --hero-padding: 112px;
+  --contact-padding: 120px;
+  --portrait-height: 480px;
+  --portrait-height-sm: 320px;
+  --spectrum-height: 220px;
+  --spectrum-height-sm: 160px;
+  --wire-gap: 38px;
+  --wire-width: 48px;
+  --table-min-width: 760px;
+}
