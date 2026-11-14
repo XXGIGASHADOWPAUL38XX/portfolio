@@ -1,0 +1,49 @@
+---
+import PixelLine from "./PixelLine.astro";
+
+/**
+ * Tableau du parcours : titre, en-têtes de colonnes, filet de pixels, lignes en slot.
+ * Défile horizontalement sous 760 px ; le conteneur est focalisable pour le clavier.
+ */
+interface Props {
+  id: string;
+  title: string;
+  columns: { label: string; width?: "period" | "entity" | "stack" }[];
+}
+
+const { id, title, columns } = Astro.props;
+const WIDTHS = { period: "w-(--column-period)", entity: "w-(--column-entity)", stack: "w-(--column-stack)" } as const;
+---
+
+<div class="flex flex-col gap-4">
+  <h3 {id} class="font-pixel text-pixel-label font-normal text-ink-subtle">{title}</h3>
+  <div class="overflow-x-auto" tabindex="0" role="region" aria-labelledby={id}>
+    <table
+      class="w-full min-w-(--table-min-width) table-fixed border-collapse text-left [&_tbody_td]:py-6 [&_tbody_td]:pr-6 [&_tbody_td]:align-top [&_tbody_td:last-child]:pr-0 [&_tbody_tr]:border-b [&_tbody_tr]:border-line"
+    >
+      <thead>
+        <tr>
+          {
+            columns.map((column) => (
+              <th
+                scope="col"
+                class:list={[
+                  "pr-6 pb-4 font-mono text-mono-xs font-semibold tracking-eyebrow text-ink-subtle uppercase last:pr-0",
+                  column.width && ["box-content", WIDTHS[column.width]],
+                ]}
+              >
+                {column.label}
+              </th>
+            ))
+          }
+        </tr>
+        <tr aria-hidden="true">
+          <td colspan={columns.length} class="p-0"><PixelLine direction="row" /></td>
+        </tr>
+      </thead>
+      <tbody>
+        <slot />
+      </tbody>
+    </table>
+  </div>
+</div>

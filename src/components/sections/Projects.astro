@@ -1,0 +1,42 @@
+---
+import { render } from "astro:content";
+import type { Projects, Site } from "../../lib/content";
+import { sectionNumber } from "../../lib/sections";
+import { COVER_SPRITES } from "../../lib/sprites";
+import Section from "../layout/Section.astro";
+import ProjectCard from "../ui/ProjectCard.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+
+/** 02 · Autres projets : cartes pleines, au plus deux par ligne, une seule sous 648 px. */
+interface Props {
+  projects: Projects["others"];
+  labels: Site["projets"];
+}
+
+const { projects, labels } = Astro.props;
+const cards = await Promise.all(projects.map(async (project) => ({ project, ...(await render(project)) })));
+const headingId = "projets-titre";
+---
+
+<Section id="projets" aria-labelledby={headingId}>
+  <SectionHeading number={sectionNumber("projets")} eyebrow={labels.surtitre} title={labels.titre} id={headingId} />
+  <div
+    class="grid grid-cols-[repeat(auto-fill,minmax(max(var(--card-min-width),calc((100%-var(--space-6))/2)),1fr))] gap-6"
+  >
+    {
+      cards.map(({ project, Content }, i) => (
+        <ProjectCard
+          slug={project.data.titre}
+          eyebrow={project.data.surtitre}
+          result={project.data.resultat}
+          cover={COVER_SPRITES[project.data.couverture]}
+          coverLabel={project.data.couvertureAlt}
+          seed={2 * i + 1}
+          href={project.data.lien}
+        >
+          <Content />
+        </ProjectCard>
+      ))
+    }
+  </div>
+</Section>
