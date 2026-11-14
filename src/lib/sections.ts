@@ -14,5 +14,22 @@ export function sectionNumber(id: SectionId): string {
   return formatIndex(SECTIONS.indexOf(id));
 }
 
-/** Lien interne vers une section. */
-export const anchor = (id: SectionId | typeof TOP_ID) => `#${id}`;
+/** Lien vers une section : « #id » sur l'accueil, « /#id » depuis une autre page. */
+export const anchor = (id: SectionId | typeof TOP_ID, from: "home" | "page" = "home") =>
+  `${from === "home" ? "" : "/"}#${id}`;
+
+/** Liens de navigation vers les sections, dans l'ordre de la page. */
+export function navLinks(
+  labels: Record<"projets" | "parcours" | "aPropos" | "contact", string>,
+  from: "home" | "page" = "home",
+): { label: string; href: string }[] {
+  return [
+    { label: labels.projets, href: anchor("a-la-une", from) },
+    { label: labels.parcours, href: anchor("parcours", from) },
+    { label: labels.aPropos, href: anchor("a-propos", from) },
+    { label: labels.contact, href: anchor("contact", from) },
+  ];
+}
+
+/** Page des mentions légales (format de sortie « directory » d'Astro). */
+export const LEGAL_PATH = "/mentions-legales/";
