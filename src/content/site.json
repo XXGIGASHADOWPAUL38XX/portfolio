@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "titre": "Tristan Ginet — portfolio",
+    "description": "Tristan Ginet, développeur IA en freelance à Lyon : Python, données et algorithmes de recommandation pour le streaming."
+  },
+  "identite": {
+    "prenom": "Tristan",
+    "nom": "Ginet",
+    "marque": "tristan.ginet",
+    "intitule": "Développeur IA",
+    "accroche": "en freelance à Lyon. Je travaille en Python sur les algorithmes de recommandation de plateformes de streaming, pour Bedrock Streaming.",
+    "legende": "Lyon · 2026",
+    "lieu": "Lyon",
+    "modeTravail": "[remote / hybride]",
+    "email": "gnttristan@gmail.com",
+    "photo": "[photo de Tristan, traitée en 1 bit : pixels verts sur fond noir]",
+    "photoAlt": "Portrait de Tristan Ginet"
+  },
+  "liens": {
+    "github": "[GitHub]",
+    "linkedin": "[LinkedIn]",
+    "cv": "[CV]"
+  },
+  "navigation": {
+    "libelle": "Navigation principale",
+    "sousNavigation": "Sections",
+    "evitement": "Aller au contenu",
+    "projets": "Projets",
+    "parcours": "Parcours",
+    "aPropos": "À propos",
+    "contact": "Contact",
+    "boutonContact": "Me contacter",
+    "themeClair": "Thème clair"
+  },
+  "hero": {
+    "libelle": "Présentation",
+    "boutonProjets": "Voir les projets",
+    "boutonCv": "Télécharger le CV"
+  },
+  "aLaUne": {
+    "surtitre": "Projet à la une",
+    "etudeDeCas": "Étude de cas",
+    "code": "Code",
+    "video": "Vidéo"
+  },
+  "projets": {
+    "surtitre": "Projets",
+    "titre": "Autres projets"
+  },
+  "contact": {
+    "surtitre": "Un projet data en tête ?",
+    "titre": "Contact",
+    "texte": "Freelance à Lyon, en mission chez Bedrock Streaming. Ouvert à tous types de missions IA dès aujourd'hui.",
+    "boutonEmail": "Me contacter"
+  },
+  "piedDePage": {
+    "libelle": "Pied de page",
+    "phraseTitre": "En une phrase",
+    "phrase": "Python, données et algorithmes de recommandation pour le streaming.",
+    "surLaPageTitre": "Sur la page",
+    "ailleursTitre": "Ailleurs",
+    "contactTitre": "Contact",
+    "cvLibelle": "CV (PDF)",
+    "hautDePage": "Haut de page",
+    "signature": "fait pixel par pixel",
+    "mentionsLegales": "Mentions légales"
+  }
+}
