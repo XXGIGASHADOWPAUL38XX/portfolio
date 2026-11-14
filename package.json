@@ -13,7 +13,7 @@
     "build:draft": "ALLOW_PLACEHOLDERS=true astro build --force",
     "check": "ALLOW_PLACEHOLDERS=true astro check",
     "test": "vitest run",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage --coverage.reporter=lcov --coverage.reporter=text-summary"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.3.0",
