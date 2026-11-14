@@ -8,6 +8,7 @@ import type { Site } from "../../lib/content";
 import SubNav from "../layout/SubNav.astro";
 import Button from "../ui/Button.astro";
 import PixelArt from "../ui/PixelArt.astro";
+import PixelLabel from "../ui/PixelLabel.astro";
 import TextLink from "../ui/TextLink.astro";
 
 interface Props {
@@ -61,7 +62,7 @@ const portrait = isPlaceholder(identite.photo)
           )
         }
       </div>
-      <figcaption class="font-pixel text-pixel-label text-ink-subtle">{identite.legende}</figcaption>
+      <PixelLabel as="figcaption">{identite.legende}</PixelLabel>
     </figure>
   </div>
 </section>

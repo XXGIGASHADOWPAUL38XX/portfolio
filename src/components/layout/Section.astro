@@ -1,18 +1,19 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-/** Section de page : ancre, padding vertical de 96 px, conteneur de 1200 px. */
+/** Section de page : ancre, padding vertical, conteneur de 1200 px. */
 interface Props extends Omit<HTMLAttributes<"section">, "class"> {
   id: string;
-  /** Écart entre l'en-tête et le contenu (48 px par défaut). */
+  /** Écart entre l'en-tête et le contenu : 48 px, ou aucun quand la section n'a qu'un bloc. */
   gap?: "default" | "none";
-  class?: string;
+  /** Padding vertical : 96 px, ou 120 px pour le bloc contact. */
+  padding?: "default" | "contact";
 }
 
-const { gap = "default", class: className, ...attrs } = Astro.props;
+const { gap = "default", padding = "default", ...attrs } = Astro.props;
 ---
 
-<section class:list={["box-border px-6 py-24", className]} {...attrs}>
+<section class:list={["box-border px-6", padding === "default" ? "py-24" : "py-(--contact-padding)"]} {...attrs}>
   <div class:list={["mx-auto flex max-w-page flex-col", gap === "default" && "gap-12"]}>
     <slot />
   </div>

@@ -1,4 +1,5 @@
 ---
+import PixelLabel from "./PixelLabel.astro";
 import PixelLine from "./PixelLine.astro";
 
 /**
@@ -16,7 +17,7 @@ const WIDTHS = { period: "w-(--column-period)", entity: "w-(--column-entity)", s
 ---
 
 <div class="flex flex-col gap-4">
-  <h3 {id} class="font-pixel text-pixel-label font-normal text-ink-subtle">{title}</h3>
+  <PixelLabel as="h3" id={id}>{title}</PixelLabel>
   <div class="overflow-x-auto" tabindex="0" role="region" aria-labelledby={id}>
     <table
       class="w-full min-w-(--table-min-width) table-fixed border-collapse text-left [&_tbody_td]:py-6 [&_tbody_td]:pr-6 [&_tbody_td]:align-top [&_tbody_td:last-child]:pr-0 [&_tbody_tr]:border-b [&_tbody_tr]:border-line"

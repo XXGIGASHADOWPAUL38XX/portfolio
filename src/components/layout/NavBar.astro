@@ -5,11 +5,13 @@ import Button from "../ui/Button.astro";
 interface Props {
   label: string;
   brand: string;
+  /** Cible de la marque : le haut de l'accueil. */
+  brandHref: string;
   links: { label: string; href: string }[];
   action: { label: string; href: string };
 }
 
-const { label, brand, links, action } = Astro.props;
+const { label, brand, brandHref, links, action } = Astro.props;
 ---
 
 <header class="sticky top-4 z-10 box-border h-0 overflow-visible px-6 pt-4">
@@ -18,7 +20,7 @@ const { label, brand, links, action } = Astro.props;
     class="mx-auto box-border flex h-(--nav-height) max-w-page items-center gap-6 rounded-pill border border-line bg-surface pr-2 pl-6"
   >
     <a
-      href="#top"
+      href={brandHref}
       class="inline-flex items-center gap-2 font-mono text-cta font-semibold text-ink no-underline before:size-2.5 before:bg-signal"
     >
       {brand}

@@ -1,0 +1,31 @@
+---
+import Footer from "../components/layout/Footer.astro";
+import NavBar from "../components/layout/NavBar.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPage, getSite } from "../lib/content";
+import { anchor, navLinks, TOP_ID } from "../lib/sections";
+
+const [site, page] = await Promise.all([getSite(), getPage("mentions-legales")]);
+const { navigation } = site;
+const { Content } = page;
+const links = navLinks(navigation, "page");
+---
+
+<BaseLayout title={`${page.data.titre} — ${site.identite.prenom} ${site.identite.nom}`} description={page.data.description}>
+  <NavBar
+    label={navigation.libelle}
+    brand={site.identite.marque}
+    brandHref="/"
+    links={links}
+    action={{ label: navigation.boutonContact, href: anchor("contact", "page") }}
+  />
+  <main id={TOP_ID} class="box-border px-6 py-(--hero-padding)">
+    <article
+      class="mx-auto flex max-w-measure flex-col gap-6 text-body text-ink-muted [&_h2]:mt-6 [&_h2]:text-tile-title [&_h2]:font-semibold [&_h2]:text-ink"
+    >
+      <h1 class="font-pixel text-pixel-number font-bold text-ink uppercase">{page.data.titre}</h1>
+      <Content />
+    </article>
+  </main>
+  <Footer site={site} navLinks={links} />
+</BaseLayout>

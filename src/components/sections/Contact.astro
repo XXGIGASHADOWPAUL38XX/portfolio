@@ -1,0 +1,41 @@
+---
+import type { Site } from "../../lib/content";
+import { sectionNumber } from "../../lib/sections";
+import Section from "../layout/Section.astro";
+import Button from "../ui/Button.astro";
+import Eyebrow from "../ui/Eyebrow.astro";
+
+/** 05 · Contact : un aplat signal-fill, l'email en grand, sans formulaire. */
+interface Props {
+  site: Site;
+}
+
+const { contact, identite, liens } = Astro.props.site;
+const mailto = `mailto:${identite.email}`;
+const headingId = "contact-titre";
+---
+
+<Section id="contact" aria-labelledby={headingId} gap="none" padding="contact">
+  <div
+    class="box-border flex flex-col items-start gap-8 rounded-lg bg-signal-fill p-(--contact-inset) text-on-signal-fill"
+  >
+    <Eyebrow tone="inherit">{sectionNumber("contact")} · {contact.surtitre}</Eyebrow>
+    <h2 id={headingId} class="font-pixel text-pixel-contact font-bold uppercase">{contact.titre}</h2>
+    <p class="max-w-pitch text-lead">{contact.texte}</p>
+    <a
+      href={mailto}
+      class="max-w-full font-mono text-mail font-medium wrap-anywhere text-on-signal-fill underline decoration-2 underline-offset-8 hover:text-on-signal-fill focus-visible:outline-on-signal-fill"
+    >
+      {identite.email}
+    </a>
+    <div class="flex flex-wrap gap-4">
+      <Button href={mailto} variant="inverse" size="lg" icon="arrow">{contact.boutonEmail}</Button>
+      <Button href={liens.linkedin.url} variant="inverse-outline" size="lg" icon="external">
+        {liens.linkedin.libelle}
+      </Button>
+      <Button href={liens.github.url} variant="inverse-outline" size="lg" icon="external">
+        {liens.github.libelle}
+      </Button>
+    </div>
+  </div>
+</Section>
