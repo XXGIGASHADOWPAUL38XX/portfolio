@@ -1,0 +1,60 @@
+{
+  "surtitre": "Parcours",
+  "titre": "D'où je viens",
+  "aujourdhui": "auj.",
+  "boutonCv": "CV complet en PDF",
+  "experience": {
+    "titre": "Expérience",
+    "colonnes": {
+      "periode": "Période",
+      "structure": "Structure",
+      "role": "Ce que j'y fais",
+      "stack": "Stack"
+    },
+    "items": [
+      {
+        "debut": 2024,
+        "fin": null,
+        "structure": "Bedrock Streaming",
+        "intitule": "[Intitulé]",
+        "lieu": "Lyon",
+        "contrat": "freelance depuis nov. 2026",
+        "description": "Algorithmes de recommandation pour des plateformes de streaming. Dans l'équipe de 2024 à 2026, puis en freelance pour Bedrock depuis novembre 2026.",
+        "stack": ["Python"]
+      },
+      {
+        "debut": 2023,
+        "fin": 2024,
+        "structure": "URSSAF",
+        "intitule": "[Intitulé]",
+        "lieu": "Saint-Priest",
+        "description": "Développement d'applications en Angular et en Java.",
+        "stack": ["Angular", "Java"]
+      }
+    ]
+  },
+  "formation": {
+    "titre": "Formation",
+    "colonnes": {
+      "periode": "Période",
+      "diplome": "Diplôme · école",
+      "parcours": "Parcours"
+    },
+    "items": [
+      {
+        "debut": 2024,
+        "fin": 2026,
+        "diplome": "Mastère Intelligence Artificielle et Big Data",
+        "ecole": "ESGI · Lyon",
+        "parcours": "Bac +5. [Spécialité ou projet de fin d'études.]"
+      },
+      {
+        "debut": "[2021]",
+        "fin": 2024,
+        "diplome": "BUT Informatique",
+        "ecole": "IUT d'Annecy · Université Savoie Mont Blanc",
+        "parcours": "Parcours Réalisation d'applications : conception, développement, validation."
+      }
+    ]
+  }
+}

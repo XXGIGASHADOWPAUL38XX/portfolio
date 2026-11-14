@@ -1,0 +1,51 @@
+{
+  "surtitre": "À propos",
+  "titre": "En ce moment",
+  "etapes": [
+    {
+      "periode": "[2021] → 2024",
+      "titre": "Le code",
+      "texte": "BUT Informatique à Annecy, puis des applications Angular et Java à l'URSSAF : les bases d'un développeur.",
+      "tags": ["Angular", "Java"]
+    },
+    {
+      "periode": "2024 → auj.",
+      "titre": "La data",
+      "texte": "Mastère IA et Big Data à l'ESGI, et des algorithmes de recommandation pour Bedrock Streaming, aujourd'hui en freelance.",
+      "tags": ["Python", "numpy", "recommandation"]
+    },
+    {
+      "periode": "à côté",
+      "titre": "Le signal",
+      "texte": "LED Tristan : analyser la musique en temps réel pour piloter un ruban de 300 LED sur ESP32.",
+      "tags": ["FFT", "ESP32"]
+    }
+  ],
+  "bio": {
+    "accroche": "Développeur IA, passé par le développement d'applications.",
+    "texte": "[Une ou deux phrases de Tristan : ce qui le motive dans la data, ce qu'il aime construire.]"
+  },
+  "tuiles": [
+    {
+      "kicker": "en mission",
+      "titre": "Recommandation chez Bedrock Streaming",
+      "texte": "Des algorithmes qui choisissent quoi proposer aux utilisateurs de plateformes de streaming. En freelance depuis novembre 2026.",
+      "tags": ["Python", "recommandation"],
+      "primary": true
+    },
+    {
+      "kicker": "à côté",
+      "titre": "LED Tristan",
+      "texte": "Un ruban de 300 LED qui réagit à la musique, effet par effet.",
+      "tags": ["FFT", "ESP32"],
+      "primary": false
+    },
+    {
+      "kicker": "je cherche",
+      "titre": "Des missions IA",
+      "texte": "Dès aujourd'hui, à Lyon ou [à distance].",
+      "tags": [],
+      "primary": false
+    }
+  ]
+}
