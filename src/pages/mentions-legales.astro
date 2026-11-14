@@ -3,7 +3,7 @@ import Footer from "../components/layout/Footer.astro";
 import NavBar from "../components/layout/NavBar.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getPage, getSite } from "../lib/content";
-import { anchor, navLinks, TOP_ID } from "../lib/sections";
+import { anchor, navLinks } from "../lib/sections";
 
 const [site, page] = await Promise.all([getSite(), getPage("mentions-legales")]);
 const { navigation } = site;
@@ -11,15 +11,16 @@ const { Content } = page;
 const links = navLinks(navigation, "page");
 ---
 
-<BaseLayout title={`${page.data.titre} — ${site.identite.prenom} ${site.identite.nom}`} description={page.data.description}>
+<BaseLayout skipLabel={navigation.evitement} title={`${page.data.titre} — ${site.identite.prenom} ${site.identite.nom}`} description={page.data.description}>
   <NavBar
     label={navigation.libelle}
     brand={site.identite.marque}
     brandHref="/"
     links={links}
+    themeLabel={navigation.themeClair}
     action={{ label: navigation.boutonContact, href: anchor("contact", "page") }}
   />
-  <main id={TOP_ID} class="box-border px-6 py-(--hero-padding)">
+  <main id="contenu" class="box-border px-6 py-(--hero-padding)">
     <article
       class="mx-auto flex max-w-measure flex-col gap-6 text-body text-ink-muted [&_h2]:mt-6 [&_h2]:text-tile-title [&_h2]:font-semibold [&_h2]:text-ink"
     >
@@ -27,5 +28,5 @@ const links = navLinks(navigation, "page");
       <Content />
     </article>
   </main>
-  <Footer site={site} navLinks={links} />
+  <Footer site={site} navLinks={links} topHref={"#contenu"} />
 </BaseLayout>

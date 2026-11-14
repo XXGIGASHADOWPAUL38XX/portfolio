@@ -1,0 +1,60 @@
+---
+import { THEME_ICON } from "../../lib/sprites";
+import PixelArt from "../ui/PixelArt.astro";
+
+/** Bascule clair / sombre : aria-pressed = thème clair actif. Masquée tant que le script n'a pas tourné. */
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  aria-label={label}
+  aria-pressed="false"
+  hidden
+  class="relative inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-pill text-ink-muted after:absolute after:-inset-1.5 hover:text-ink aria-pressed:text-signal-text max-sm:ml-auto"
+>
+  <PixelArt sprite={THEME_ICON} tone="current" />
+</button>
+
+<script>
+  const STORAGE_KEY = "theme";
+  const root = document.documentElement;
+  const button = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
+  const systemLight = matchMedia("(prefers-color-scheme: light)");
+
+  function storedTheme(): string | null {
+    try {
+      return localStorage.getItem(STORAGE_KEY);
+    } catch {
+      return null;
+    }
+  }
+
+  function apply(theme: "light" | "dark") {
+    root.dataset.theme = theme;
+    button?.setAttribute("aria-pressed", String(theme === "light"));
+  }
+
+  if (button) {
+    button.hidden = false;
+    apply(root.dataset.theme === "light" ? "light" : "dark");
+    button.addEventListener("click", () => {
+      const next = root.dataset.theme === "light" ? "dark" : "light";
+      apply(next);
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        // Stockage indisponible (navigation privée) : le choix vaut pour cette page.
+      }
+    });
+    // Sans choix enregistré, le site suit la préférence système, même si elle change.
+    systemLight.addEventListener("change", (event) => {
+      if (storedTheme() === null) apply(event.matches ? "light" : "dark");
+    });
+  }
+</script>
