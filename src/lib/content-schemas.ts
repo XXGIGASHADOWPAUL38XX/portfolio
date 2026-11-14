@@ -77,7 +77,7 @@ export function createSchemas(field: Fields) {
 
   const experience = z.object({
     debut: field.year(),
-    fin: field.year().nullish().transform((value) => value ?? null),
+    fin: field.year().nullable().default(null),
     structure: field.text(),
     intitule: field.text(),
     lieu: field.text(),
