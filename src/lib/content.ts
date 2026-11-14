@@ -1,4 +1,5 @@
 import { type CollectionEntry, getCollection, getEntry, render } from "astro:content";
+import { entryData } from "./content-entry";
 import { splitProjects } from "./projects";
 
 export type Site = CollectionEntry<"site">["data"];
@@ -7,27 +8,14 @@ export type Apropos = CollectionEntry<"apropos">["data"];
 export type Projects = ReturnType<typeof splitProjects<CollectionEntry<"projets">>>;
 
 /** Accès au contenu validé. Une entrée manquante est une erreur de build, pas un rendu vide. */
-function missing(file: string): never {
-  throw new Error(`Contenu manquant : src/content/${file}`);
-}
-
-export async function getSite(): Promise<Site> {
-  return (await getEntry("site", "site"))?.data ?? missing("site.json");
-}
-
-export async function getParcours(): Promise<Parcours> {
-  return (await getEntry("parcours", "parcours"))?.data ?? missing("parcours.json");
-}
-
-export async function getApropos(): Promise<Apropos> {
-  return (await getEntry("apropos", "apropos"))?.data ?? missing("apropos.json");
-}
-
-export async function getProjects(): Promise<Projects> {
-  return splitProjects(await getCollection("projets"));
-}
+export const getSite = async (): Promise<Site> => entryData(await getEntry("site", "site"), "site.json");
+export const getParcours = async (): Promise<Parcours> =>
+  entryData(await getEntry("parcours", "parcours"), "parcours.json");
+export const getApropos = async (): Promise<Apropos> => entryData(await getEntry("apropos", "apropos"), "apropos.json");
+export const getProjects = async (): Promise<Projects> => splitProjects(await getCollection("projets"));
 
 export async function getPage(id: string) {
-  const entry = (await getEntry("pages", id)) ?? missing(`pages/${id}.md`);
-  return { data: entry.data, ...(await render(entry)) };
+  const entry = await getEntry("pages", id);
+  const page = entryData(entry && { data: entry }, `pages/${id}.md`);
+  return { data: page.data, ...(await render(page)) };
 }
