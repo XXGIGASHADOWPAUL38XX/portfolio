@@ -1,0 +1,30 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+/**
+ * Lien secondaire en mono (liens du hero et du pied de page).
+ * La zone cliquable est agrandie à 44 px de haut sans changer le rendu.
+ */
+interface Props extends Omit<HTMLAttributes<"a">, "class"> {
+  href: string;
+  tone?: "muted" | "ink";
+  /** Au survol : ink (hero) ou signal-text (pied de page). */
+  hover?: "ink" | "signal";
+  icon?: "external" | "download";
+}
+
+const { tone = "muted", hover = "ink", icon, ...attrs } = Astro.props;
+const ICONS = { external: "↗", download: "↓" } as const;
+---
+
+<a
+  class:list={[
+    "relative inline-flex min-h-8 items-center gap-1.5 font-mono text-label no-underline after:absolute after:inset-x-0 after:-inset-y-1.5",
+    { muted: "text-ink-muted", ink: "text-ink" }[tone],
+    { ink: "hover:text-ink", signal: "hover:text-signal-text" }[hover],
+  ]}
+  {...attrs}
+>
+  <slot />
+  {icon && <span aria-hidden="true">{ICONS[icon]}</span>}
+</a>

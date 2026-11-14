@@ -133,6 +133,14 @@
     scroll-behavior: smooth;
   }
 
+  a {
+    color: var(--signal-text);
+  }
+
+  a:hover {
+    color: var(--ink);
+  }
+
   :focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;

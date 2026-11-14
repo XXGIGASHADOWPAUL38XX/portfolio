@@ -1,0 +1,33 @@
+---
+import { ledSpectrum, ledStrip } from "../../../lib/led";
+import PixelLine from "../../ui/PixelLine.astro";
+
+/** Figure du spectre (113 barres générées au build) et du ruban de LED qu'il pilote. */
+interface Props {
+  labels: { graves: string; centre: string; aigus: string; legende: string; debit: string };
+}
+
+const { labels } = Astro.props;
+const spectrum = ledSpectrum();
+const strip = ledStrip();
+---
+
+<figure
+  class="box-border flex min-w-0 flex-col gap-3 rounded-lg border border-line bg-surface p-8 max-xs:p-5"
+>
+  <div aria-hidden="true" class="flex h-(--spectrum-height) items-end gap-0.5 overflow-hidden max-xs:h-(--spectrum-height-sm)">
+    {spectrum.map((cells) => <PixelLine direction="column" cells={cells} />)}
+  </div>
+  <div class="flex flex-wrap justify-between gap-x-4 gap-y-1 font-mono text-mono-xs text-ink-subtle">
+    <span>{labels.graves}</span><span>{labels.centre}</span><span>{labels.aigus}</span>
+  </div>
+  <div
+    aria-hidden="true"
+    class="mt-4 box-border flex max-w-full gap-0.5 self-start overflow-hidden border border-line bg-bg p-2"
+  >
+    {strip.map((on) => <span class:list={["block size-(--pixel-unit) shrink-0", on && "bg-signal"]} />)}
+  </div>
+  <figcaption class="flex flex-wrap justify-between gap-x-4 gap-y-1 font-pixel text-pixel-label text-ink-subtle">
+    <span>{labels.legende}</span><span>{labels.debit}</span>
+  </figcaption>
+</figure>

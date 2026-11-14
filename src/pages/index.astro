@@ -1,10 +1,34 @@
 ---
+import NavBar from "../components/layout/NavBar.astro";
+import FeaturedProject from "../components/sections/featured/FeaturedProject.astro";
+import Hero from "../components/sections/Hero.astro";
+import Separator from "../components/ui/Separator.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getProjects, getSite } from "../lib/content";
+import { anchor } from "../lib/sections";
+
+const site = await getSite();
+const projects = await getProjects();
+const { navigation } = site;
+
+const navLinks = [
+  { label: navigation.projets, href: anchor("a-la-une") },
+  { label: navigation.parcours, href: anchor("parcours") },
+  { label: navigation.aPropos, href: anchor("a-propos") },
+  { label: navigation.contact, href: anchor("contact") },
+];
 ---
 
-<BaseLayout title="Tristan Ginet — portfolio" description="Portfolio de Tristan Ginet">
+<BaseLayout title={site.meta.titre} description={site.meta.description}>
+  <NavBar
+    label={navigation.libelle}
+    brand={site.identite.marque}
+    links={navLinks}
+    action={{ label: navigation.boutonContact, href: anchor("contact") }}
+  />
   <main>
-    <h1 class="font-pixel text-pixel-name text-signal-text uppercase">Tristan Ginet</h1>
-    <p class="font-mono text-label text-ink-muted">Fondations</p>
+    <Hero site={site} navLinks={navLinks} />
+    <FeaturedProject project={projects.featured} labels={site.aLaUne} />
+    <Separator variant="wave" />
   </main>
 </BaseLayout>
