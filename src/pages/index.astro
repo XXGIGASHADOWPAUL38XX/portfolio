@@ -1,40 +1,40 @@
 ---
+import Footer from "../components/layout/Footer.astro";
 import NavBar from "../components/layout/NavBar.astro";
+import About from "../components/sections/About.astro";
 import Career from "../components/sections/Career.astro";
+import Contact from "../components/sections/Contact.astro";
 import FeaturedProject from "../components/sections/featured/FeaturedProject.astro";
 import Hero from "../components/sections/Hero.astro";
 import Projects from "../components/sections/Projects.astro";
 import Separator from "../components/ui/Separator.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getParcours, getProjects, getSite } from "../lib/content";
-import { anchor } from "../lib/sections";
+import { getApropos, getParcours, getProjects, getSite } from "../lib/content";
+import { anchor, navLinks } from "../lib/sections";
 
-const site = await getSite();
-const projects = await getProjects();
-const parcours = await getParcours();
+const [site, projects, parcours, apropos] = await Promise.all([getSite(), getProjects(), getParcours(), getApropos()]);
 const { navigation } = site;
-
-const navLinks = [
-  { label: navigation.projets, href: anchor("a-la-une") },
-  { label: navigation.parcours, href: anchor("parcours") },
-  { label: navigation.aPropos, href: anchor("a-propos") },
-  { label: navigation.contact, href: anchor("contact") },
-];
+const links = navLinks(navigation);
 ---
 
 <BaseLayout title={site.meta.titre} description={site.meta.description}>
   <NavBar
     label={navigation.libelle}
     brand={site.identite.marque}
-    links={navLinks}
+    brandHref={anchor("top")}
+    links={links}
     action={{ label: navigation.boutonContact, href: anchor("contact") }}
   />
   <main>
-    <Hero site={site} navLinks={navLinks} />
+    <Hero site={site} navLinks={links} />
     <FeaturedProject project={projects.featured} labels={site.aLaUne} />
     <Separator variant="wave" />
     <Projects projects={projects.others} labels={site.projets} />
     <Career parcours={parcours} cv={site.liens.cv} />
     <Separator variant="graph" />
+    <About apropos={apropos} />
+    <Separator variant="binary" />
+    <Contact site={site} />
   </main>
+  <Footer site={site} navLinks={links} />
 </BaseLayout>

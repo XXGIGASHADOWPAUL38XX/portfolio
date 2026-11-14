@@ -1,0 +1,57 @@
+---
+import type { Apropos } from "../../lib/content";
+import { formatIndex, sectionNumber } from "../../lib/sections";
+import Section from "../layout/Section.astro";
+import Eyebrow from "../ui/Eyebrow.astro";
+import InfoTile from "../ui/InfoTile.astro";
+import PixelLine from "../ui/PixelLine.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import Tag from "../ui/Tag.astro";
+
+/** 04 · À propos : trois étapes reliées par un filet, la bio, les tuiles « en ce moment ». */
+interface Props {
+  apropos: Apropos;
+}
+
+const { apropos } = Astro.props;
+const lastStep = apropos.etapes.length - 1;
+const headingId = "a-propos-titre";
+---
+
+<Section id="a-propos" aria-labelledby={headingId}>
+  <SectionHeading number={sectionNumber("a-propos")} eyebrow={apropos.surtitre} title={apropos.titre} id={headingId} />
+  <ol class="m-0 grid list-none grid-cols-3 gap-8 p-0 max-md:grid-cols-1">
+    {
+      apropos.etapes.map((etape, i) => (
+        <li class="flex min-w-0 flex-col gap-5">
+          <div class="flex items-center gap-4">
+            <span class="font-pixel text-pixel-number-lg text-signal-text">{formatIndex(i)}</span>
+            {i < lastStep && <PixelLine direction="row" class="flex-1" />}
+          </div>
+          <Eyebrow>{etape.periode}</Eyebrow>
+          <h3 class="text-stage-title font-semibold">{etape.titre}</h3>
+          <p class="text-body text-ink-muted">{etape.texte}</p>
+          <div class="flex flex-wrap gap-2">
+            {etape.tags.map((tag) => (
+              <Tag>{tag}</Tag>
+            ))}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="text-lead text-ink-muted"><span class="text-ink">{apropos.bio.accroche}</span> {apropos.bio.texte}</p>
+  <div class="grid grid-cols-2 gap-4 max-xs:grid-cols-1">
+    {
+      apropos.tuiles.map((tuile) => (
+        <InfoTile
+          kicker={tuile.kicker}
+          title={tuile.titre}
+          text={tuile.texte}
+          tags={tuile.tags}
+          primary={tuile.primary}
+        />
+      ))
+    }
+  </div>
+</Section>

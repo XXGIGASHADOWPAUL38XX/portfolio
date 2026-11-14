@@ -1,0 +1,13 @@
+---
+import type { HTMLAttributes, HTMLTag } from "astro/types";
+
+/** Légende ou petit titre en Silkscreen (style « pixel-label » de Signal), en ink-subtle. */
+type Props = Omit<HTMLAttributes<"span">, "class"> & {
+  as?: HTMLTag;
+  class?: string;
+};
+
+const { as: Tag = "span", class: className, ...attrs } = Astro.props;
+---
+
+<Tag class:list={["font-pixel text-pixel-label font-normal text-ink-subtle", className]} {...attrs}><slot /></Tag>

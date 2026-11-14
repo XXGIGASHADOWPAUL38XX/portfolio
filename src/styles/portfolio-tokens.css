@@ -53,4 +53,6 @@
   --column-entity: 300px;
   --column-stack: 200px;
   --card-min-width: 300px;
+  --footer-column: 200px;
+  --contact-inset: clamp(32px, 6vw, 64px);
 }

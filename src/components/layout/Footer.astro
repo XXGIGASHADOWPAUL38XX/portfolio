@@ -1,0 +1,72 @@
+---
+import type { Site } from "../../lib/content";
+import { anchor, LEGAL_PATH } from "../../lib/sections";
+import { ARROW_UP } from "../../lib/sprites";
+import PixelArt from "../ui/PixelArt.astro";
+import PixelLabel from "../ui/PixelLabel.astro";
+import PixelLine from "../ui/PixelLine.astro";
+import TextLink from "../ui/TextLink.astro";
+
+/** Pied de page : signature, retour en haut, liens de la page et d'ailleurs, contact, mentions légales. */
+interface Props {
+  site: Site;
+  navLinks: { label: string; href: string }[];
+}
+
+const { site, navLinks } = Astro.props;
+const { identite, liens, piedDePage } = site;
+const year = new Date().getFullYear();
+---
+
+<footer class="box-border border-t border-line px-6 pt-24 pb-8">
+  <div class="mx-auto flex max-w-page flex-col gap-16">
+    <div class="flex flex-wrap items-end justify-between gap-8">
+      <p class="font-pixel text-pixel-signature font-bold text-ink uppercase">
+        {identite.prenom}<br />{identite.nom}
+      </p>
+      <a
+        href={anchor("top")}
+        class="inline-flex min-w-11 flex-col items-center gap-3 border border-line-strong p-4 font-mono text-mono-sm text-ink no-underline hover:text-signal-text"
+      >
+        <PixelArt sprite={ARROW_UP} />
+        {piedDePage.hautDePage}
+      </a>
+    </div>
+    <PixelLine direction="row" />
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(var(--footer-column),1fr))] gap-8">
+      <div class="flex flex-col gap-3">
+        <PixelLabel as="h2">{piedDePage.phraseTitre}</PixelLabel>
+        <p class="text-body text-ink-muted">{piedDePage.phrase}</p>
+      </div>
+      <nav aria-label={piedDePage.libelle} class="flex flex-col items-start gap-1">
+        <PixelLabel as="h2" class="mb-2">{piedDePage.surLaPageTitre}</PixelLabel>
+        {
+          navLinks.map((link) => (
+            <TextLink href={link.href} tone="ink" hover="signal">
+              {link.label}
+            </TextLink>
+          ))
+        }
+      </nav>
+      <div class="flex flex-col items-start gap-1">
+        <PixelLabel as="h2" class="mb-2">{piedDePage.ailleursTitre}</PixelLabel>
+        <TextLink href={liens.github.url} tone="ink" hover="signal" icon="external">{liens.github.libelle}</TextLink>
+        <TextLink href={liens.linkedin.url} tone="ink" hover="signal" icon="external">
+          {liens.linkedin.libelle}
+        </TextLink>
+        <TextLink href={liens.cv} tone="ink" hover="signal" icon="download" download>{piedDePage.cvLibelle}</TextLink>
+      </div>
+      <div class="flex flex-col items-start gap-3">
+        <PixelLabel as="h2">{piedDePage.contactTitre}</PixelLabel>
+        <a href={`mailto:${identite.email}`} class="font-mono text-label hover:text-signal-text">{identite.email}</a>
+        <p class="font-mono text-label text-ink-muted">{identite.lieu} · {identite.modeTravail}</p>
+      </div>
+    </div>
+    <div
+      class="flex flex-wrap justify-between gap-4 border-t border-line pt-6 font-mono text-mono-sm text-ink-subtle"
+    >
+      <span>© {year} {identite.prenom} {identite.nom} · {piedDePage.signature}</span>
+      <a href={LEGAL_PATH} class="text-ink-muted no-underline hover:text-signal-text">{piedDePage.mentionsLegales}</a>
+    </div>
+  </div>
+</footer>
