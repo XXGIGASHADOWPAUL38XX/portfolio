@@ -1,1 +1,144 @@
 @import "tailwindcss";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/600.css";
+@import "@fontsource/silkscreen/400.css";
+@import "@fontsource/silkscreen/700.css";
+@import "./signal-tokens.css";
+@import "./portfolio-tokens.css";
+
+/*
+ * Tokens Signal exposés à Tailwind. Les palettes, tailles et rayons par défaut sont
+ * retirés : seules les valeurs des tokens existent comme utilitaires.
+ * Les variables de même nom (--font-sans, --radius-xs…) sont résolues par la
+ * déclaration non « layered » de signal-tokens.css, qui l'emporte sur la couche theme.
+ */
+@theme inline {
+  --color-*: initial;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-signal: var(--signal);
+  --color-on-signal: var(--on-signal);
+  --color-signal-edge: var(--signal-edge);
+  --color-signal-text: var(--signal-text);
+  --color-signal-soft: var(--signal-soft);
+  --color-signal-fill: var(--signal-fill);
+  --color-on-signal-fill: var(--on-signal-fill);
+  --color-focus-ring: var(--focus-ring);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --spacing: var(--space-1);
+
+  --radius-*: initial;
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-node: var(--radius-node);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-pill: var(--radius-pill);
+
+  --container-*: initial;
+  --container-page: var(--container);
+  --container-measure: var(--measure);
+  --container-lead: var(--lead-width);
+  --container-pitch: var(--pitch-width);
+
+  --font-*: initial;
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-pixel: var(--font-pixel);
+
+  --text-*: initial;
+  --text-eyebrow: var(--type-eyebrow);
+  --text-eyebrow--line-height: var(--type-eyebrow-lh);
+  --text-mono-sm: var(--type-mono-sm);
+  --text-mono-sm--line-height: var(--type-mono-sm-lh);
+  --text-label: var(--type-label);
+  --text-label--line-height: var(--type-label-lh);
+  --text-cta: var(--type-cta);
+  --text-cta--line-height: var(--type-cta-lh);
+  --text-body-sm: var(--type-body-sm);
+  --text-body-sm--line-height: var(--type-body-sm-lh);
+  --text-step: var(--type-step);
+  --text-step--line-height: var(--type-step-lh);
+  --text-body: var(--type-body);
+  --text-body--line-height: var(--type-body-lh);
+  --text-body-lg: var(--type-body-lg);
+  --text-body-lg--line-height: var(--type-body-lg-lh);
+  --text-entity: var(--type-entity);
+  --text-entity--line-height: var(--type-entity-lh);
+  --text-lead: var(--type-lead);
+  --text-lead--line-height: var(--type-lead-lh);
+  --text-pixel-caption: var(--type-pixel-caption);
+  --text-pixel-caption--line-height: var(--type-pixel-caption-lh);
+  --text-pixel-label: var(--type-pixel-label);
+  --text-pixel-label--line-height: var(--type-pixel-label-lh);
+  --text-pixel-period: var(--type-pixel-period);
+  --text-pixel-period--line-height: var(--type-pixel-period-lh);
+  --text-pixel-step: var(--type-pixel-step);
+  --text-pixel-step--line-height: 1;
+  --text-tile-title: var(--type-tile-title);
+  --text-tile-title--line-height: var(--type-tile-title-lh);
+  --text-tile-title-lg: var(--type-tile-title-lg);
+  --text-tile-title-lg--line-height: var(--type-tile-title-lh);
+  --text-stage-title: var(--type-stage-title);
+  --text-stage-title--line-height: var(--type-stage-title-lh);
+  --text-pixel-stat: var(--type-pixel-stat);
+  --text-pixel-stat--line-height: 1;
+  --text-mail: var(--type-mail);
+  --text-mail--line-height: var(--type-mail-lh);
+  --text-h2: var(--type-h2);
+  --text-h2--line-height: var(--type-h2-lh);
+  --text-pixel-number: var(--type-pixel-number);
+  --text-pixel-number--line-height: 1;
+  --text-pixel-number-lg: var(--type-pixel-number-lg);
+  --text-pixel-number-lg--line-height: 1;
+  --text-pixel-name: var(--type-pixel-name);
+  --text-pixel-name--line-height: var(--type-pixel-display-lh);
+  --text-pixel-signature: var(--type-pixel-signature);
+  --text-pixel-signature--line-height: var(--type-pixel-display-lh);
+  --text-pixel-contact: var(--type-pixel-contact);
+  --text-pixel-contact--line-height: var(--type-pixel-display-lh);
+
+  --tracking-*: initial;
+  --tracking-eyebrow: var(--tracking-eyebrow);
+  --tracking-h2: var(--tracking-h2);
+
+  --breakpoint-*: initial;
+  --breakpoint-xs: 40rem;
+  --breakpoint-sm: 45rem;
+  --breakpoint-md: 53.75rem;
+  --breakpoint-lg: 60rem;
+  --breakpoint-xl: 64rem;
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}

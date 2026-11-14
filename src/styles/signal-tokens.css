@@ -1,0 +1,25 @@
+/* Signal — generated from tokens.json */
+:root, [data-theme="dark"] {
+  --bg: #000000; --surface: #18181b; --surface-raised: #27272a; --line: #27272a; --line-strong: #71717a;
+  --ink: #ffffff; --ink-muted: #a1a1aa; --ink-subtle: #84848d;
+  --signal: #48e054; --on-signal: #19191c; --signal-edge: #48e054; --signal-text: #48e054; --signal-soft: #0c240d; --signal-fill: #48e054; --on-signal-fill: #000000; --focus-ring: #48e054;
+  --warning: #f6bc00; --danger: #ff5c63;
+  --data-1: #029b23; --data-2: #5675ea; --data-3: #0a9485; --data-4: #9c7af8; --data-5: #c75e05; --data-6: #c73ab6;
+  --code-keyword: #ff70eb; --code-fn: #8fa6ff; --code-string: #48e054; --code-number: #f6bc00; --code-comment: #84848d;
+}
+[data-theme="light"] {
+  --bg: #ffffff; --surface: #f4f4f5; --surface-raised: #ffffff; --line: #e4e4e7; --line-strong: #71717a;
+  --ink: #19191c; --ink-muted: #52525c; --ink-subtle: #6b6b74;
+  --signal: #48e054; --on-signal: #19191c; --signal-edge: #007a3d; --signal-text: #007a3d; --signal-soft: #e6f6e7; --signal-fill: #007a3d; --on-signal-fill: #ffffff; --focus-ring: #007a3d;
+  --warning: #8a6400; --danger: #c62832;
+  --data-1: #017919; --data-2: #3c55c8; --data-3: #07948a; --data-4: #6c45be; --data-5: #9b4803; --data-6: #dc50ca;
+  --code-keyword: #b3009e; --code-fn: #0b5fa5; --code-string: #007a3d; --code-number: #8a6400; --code-comment: #6b6b74;
+}
+:root {
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px; --space-24: 96px;
+  --radius-xs: 4px; --radius-sm: 8px; --radius-md: 16px; --radius-lg: 24px; --radius-xl: 48px; --radius-pill: 999px;
+  --container: 1200px; --measure: 68ch; --nav-height: 56px; --pixel-unit: 8px; --pixel-pitch: 10px;
+  --font-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-pixel: "Silkscreen", ui-monospace, monospace;
+}
