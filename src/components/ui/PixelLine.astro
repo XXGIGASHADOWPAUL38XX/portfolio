@@ -1,0 +1,29 @@
+---
+/**
+ * Filet de pixels (carrés --pixel-unit au pas --pixel-pitch), en vert signal.
+ * row : filet horizontal qui remplit sa largeur.
+ * column : filet vertical qui remplit sa hauteur, ou barre de `cells` cellules (spectre).
+ */
+type Props = { direction: "row"; class?: string } | { direction: "column"; cells?: number; class?: string };
+
+const props = Astro.props;
+const cells = props.direction === "column" ? props.cells : undefined;
+
+const DIRECTION_CLASSES = {
+  row: "h-(--pixel-unit) w-full bg-[repeating-linear-gradient(90deg,var(--signal)_0_var(--pixel-unit),transparent_var(--pixel-unit)_var(--pixel-pitch))]",
+  column:
+    "w-(--pixel-unit) bg-[repeating-linear-gradient(0deg,var(--signal)_0_var(--pixel-unit),transparent_var(--pixel-unit)_var(--pixel-pitch))]",
+} as const;
+---
+
+<span
+  aria-hidden="true"
+  class:list={[
+    "block shrink-0",
+    DIRECTION_CLASSES[props.direction],
+    props.direction === "column" &&
+      (cells === undefined ? "h-full" : "h-[calc(var(--cells)*var(--pixel-pitch)-var(--pixel-pitch)+var(--pixel-unit))]"),
+    props.class,
+  ]}
+  style={cells === undefined ? undefined : `--cells: ${cells}`}
+></span>

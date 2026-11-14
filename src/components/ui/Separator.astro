@@ -1,0 +1,41 @@
+---
+import { PIXEL_GRID } from "../../lib/design-tokens";
+import { spriteGeometry } from "../../lib/pixel-art";
+import { SEPARATOR_BINARY, SEPARATOR_GRAPH, SEPARATOR_WAVE } from "../../lib/sprites";
+import PixelArt from "./PixelArt.astro";
+
+/**
+ * Frise décorative entre deux sections, rendue au build.
+ * wave : une forme d'onde recadrée au centre sur petit écran.
+ * graph / binary : une suite d'éléments entiers ; ceux qui ne tiennent pas passent à la ligne, masquée.
+ */
+interface Props {
+  variant: "wave" | "graph" | "binary";
+}
+
+const { variant } = Astro.props;
+const items = variant === "graph" ? SEPARATOR_GRAPH : SEPARATOR_BINARY;
+const rowHeight = spriteGeometry(items[0] ?? [], PIXEL_GRID).height;
+---
+
+<div aria-hidden="true" class="mx-auto box-border flex max-w-page flex-col items-center gap-4 p-6">
+  {
+    variant === "wave" ? (
+      <div class="flex justify-center self-stretch overflow-hidden">
+        <PixelArt sprite={SEPARATOR_WAVE} />
+      </div>
+    ) : (
+      <div
+        class:list={[
+          "flex h-(--row-height) flex-wrap items-end justify-center self-stretch overflow-hidden",
+          variant === "graph" ? "gap-x-0.5" : "gap-x-3",
+        ]}
+        style={`--row-height: ${rowHeight}px`}
+      >
+        {items.map((sprite) => (
+          <PixelArt sprite={sprite} />
+        ))}
+      </div>
+    )
+  }
+</div>

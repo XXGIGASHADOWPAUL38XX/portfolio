@@ -1,0 +1,21 @@
+---
+import type { HTMLTag } from "astro/types";
+
+/** Sur-titre en capitales mono (style « eyebrow » de Signal). */
+interface Props {
+  as?: HTMLTag;
+  /** subtle : ink-subtle ; inherit : couleur du parent (ex. sur signal-fill). */
+  tone?: "subtle" | "inherit";
+  class?: string;
+}
+
+const { as: Tag = "span", tone = "subtle", class: className } = Astro.props;
+---
+
+<Tag
+  class:list={[
+    "font-mono text-mono-xs font-semibold tracking-eyebrow uppercase",
+    tone === "subtle" && "text-ink-subtle",
+    className,
+  ]}><slot /></Tag
+>

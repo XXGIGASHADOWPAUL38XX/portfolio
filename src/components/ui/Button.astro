@@ -1,0 +1,58 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+/**
+ * Bouton-lien de Signal. Toutes les actions du site sont des liens.
+ * La zone cliquable est agrandie à 44 px de haut par un pseudo-élément, sans changer le rendu.
+ */
+interface Props extends Omit<HTMLAttributes<"a">, "class"> {
+  href: string;
+  /** primary / secondary / ghost : sur le fond de page ; inverse / inverse-outline : sur signal-fill. */
+  variant?: "primary" | "secondary" | "ghost" | "inverse" | "inverse-outline";
+  size?: "sm" | "md" | "lg";
+  /** Indice visuel après le libellé : → action, ↗ lien externe, ↓ téléchargement. */
+  icon?: "arrow" | "external" | "download";
+  class?: string;
+}
+
+const { variant = "primary", size = "md", icon, class: className, ...attrs } = Astro.props;
+
+const VARIANTS = {
+  primary: "border-signal-edge bg-signal text-on-signal hover:bg-[color-mix(in_srgb,var(--signal)_86%,var(--ink))]",
+  secondary: "border-line-strong text-ink hover:border-ink-muted hover:bg-surface-raised",
+  ghost: "border-transparent px-3 text-ink-muted hover:text-ink",
+  inverse:
+    "border-on-signal-fill bg-on-signal-fill text-signal-fill hover:underline focus-visible:outline-on-signal-fill",
+  "inverse-outline": "border-on-signal-fill text-on-signal-fill hover:underline focus-visible:outline-on-signal-fill",
+} as const;
+
+const SIZES = {
+  sm: "h-8 px-4 text-mono-sm after:-inset-y-1.5",
+  md: "h-10 px-6 text-label after:-inset-y-0.5",
+  lg: "min-h-12 px-6 text-cta",
+} as const;
+
+const ICONS = { arrow: "→", external: "↗", download: "↓" } as const;
+---
+
+<a
+  class:list={[
+    "group relative inline-flex items-center gap-2 rounded-pill border font-mono no-underline underline-offset-4 transition-colors after:absolute after:inset-x-0 active:translate-y-px motion-reduce:transition-none",
+    VARIANTS[variant],
+    SIZES[size],
+    className,
+  ]}
+  {...attrs}
+>
+  <slot />
+  {
+    icon && (
+      <span
+        aria-hidden="true"
+        class:list={[icon === "arrow" && "transition-transform group-hover:translate-x-0.75 motion-reduce:transition-none"]}
+      >
+        {ICONS[icon]}
+      </span>
+    )
+  }
+</a>

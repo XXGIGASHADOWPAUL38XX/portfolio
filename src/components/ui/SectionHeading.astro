@@ -1,0 +1,32 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+
+/**
+ * En-tête de section : numéro pixel, sur-titre et titre h2.
+ * Le slot « accent » prolonge le titre en vert ; le slot « action » se place à droite.
+ */
+interface Props {
+  number: string;
+  eyebrow: string;
+  title: string;
+  /** id du h2, pour aria-labelledby sur la section. */
+  id: string;
+}
+
+const { number, eyebrow, title, id } = Astro.props;
+const hasAction = Astro.slots.has("action");
+---
+
+<div class:list={["flex flex-wrap items-end gap-4", hasAction && "justify-between"]}>
+  <div class="flex flex-wrap items-end gap-x-6 gap-y-2">
+    <span class="font-pixel text-pixel-number text-signal-text" aria-hidden="true">{number}</span>
+    <div class="flex flex-col gap-2">
+      <Eyebrow>{eyebrow}</Eyebrow>
+      <h2 {id} class="text-h2 font-semibold tracking-h2">
+        {title}
+        {Astro.slots.has("accent") && <span class="text-signal-text"><slot name="accent" /></span>}
+      </h2>
+    </div>
+  </div>
+  <slot name="action" />
+</div>

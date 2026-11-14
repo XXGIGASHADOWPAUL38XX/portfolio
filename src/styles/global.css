@@ -59,8 +59,8 @@
   --font-pixel: var(--font-pixel);
 
   --text-*: initial;
-  --text-eyebrow: var(--type-eyebrow);
-  --text-eyebrow--line-height: var(--type-eyebrow-lh);
+  --text-mono-xs: var(--type-mono-xs);
+  --text-mono-xs--line-height: var(--type-mono-xs-lh);
   --text-mono-sm: var(--type-mono-sm);
   --text-mono-sm--line-height: var(--type-mono-sm-lh);
   --text-label: var(--type-label);
@@ -87,6 +87,8 @@
   --text-pixel-period--line-height: var(--type-pixel-period-lh);
   --text-pixel-step: var(--type-pixel-step);
   --text-pixel-step--line-height: 1;
+  --text-slug: var(--type-slug);
+  --text-slug--line-height: var(--type-slug-lh);
   --text-tile-title: var(--type-tile-title);
   --text-tile-title--line-height: var(--type-tile-title-lh);
   --text-tile-title-lg: var(--type-tile-title-lg);
