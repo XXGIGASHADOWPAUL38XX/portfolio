@@ -1,0 +1,320 @@
+# Pages CMS — https://pagescms.org/docs/configuration/
+# Chaque champ correspond au schéma Zod de src/content.config.ts.
+# Un texte entre [crochets] est un contenu à remplacer : il bloque la mise en ligne.
+
+media:
+  - name: images
+    label: Images
+    input: src/assets/media
+    output: /src/assets/media
+    categories: [image]
+  - name: documents
+    label: Documents
+    input: public/documents
+    output: /documents
+    categories: [document]
+
+components:
+  texte:
+    type: string
+    required: true
+    pattern:
+      regex: "^[^\\[\\]]*$"
+      message: "Retirez les crochets [ ] : ils marquent un contenu à remplacer."
+  paragraphe:
+    type: text
+    required: true
+    pattern:
+      regex: "^[^\\[\\]]*$"
+      message: "Retirez les crochets [ ] : ils marquent un contenu à remplacer."
+  lien:
+    type: string
+    required: true
+    pattern:
+      regex: "^https?://\\S+$"
+      message: "Une adresse complète, qui commence par https://"
+  annee:
+    type: number
+    required: true
+    options:
+      min: 1900
+      max: 2100
+
+content:
+  - name: site
+    label: Site (accueil, contact, pied de page)
+    type: file
+    path: src/content/site.json
+    format: json
+    fields:
+      - name: meta
+        label: Référencement
+        type: object
+        fields:
+          - { name: titre, label: Titre de l'onglet, component: texte }
+          - { name: description, label: Description pour les moteurs de recherche, component: paragraphe }
+      - name: identite
+        label: Identité
+        type: object
+        fields:
+          - { name: prenom, label: Prénom, component: texte }
+          - { name: nom, label: Nom, component: texte }
+          - { name: marque, label: Marque de la barre de navigation, component: texte }
+          - { name: intitule, label: Intitulé (mis en avant dans le hero), component: texte }
+          - { name: accroche, label: Accroche (suite de l'intitulé), component: paragraphe }
+          - { name: legende, label: Légende du portrait, component: texte }
+          - { name: lieu, label: Ville, component: texte }
+          - { name: modeTravail, label: Mode de travail (pied de page), component: texte }
+          - { name: email, label: Email, type: string, required: true, pattern: { regex: "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", message: "Une adresse email valide." } }
+          - { name: photo, label: Photo (convertie en pixels verts au build), type: image, required: true, options: { media: images } }
+          - { name: photoAlt, label: Description de la photo, component: texte }
+      - name: liens
+        label: Liens
+        type: object
+        fields:
+          - { name: github, label: GitHub, component: lien }
+          - { name: linkedin, label: LinkedIn, component: lien }
+          - { name: cv, label: CV (PDF), type: file, required: true, options: { media: documents, extensions: [pdf] } }
+      - name: navigation
+        label: Navigation
+        type: object
+        fields:
+          - { name: libelle, label: Nom de la navigation (lecteurs d'écran), component: texte }
+          - { name: sousNavigation, label: Nom de la navigation mobile (lecteurs d'écran), component: texte }
+          - { name: evitement, label: Lien d'évitement vers le contenu, component: texte }
+          - { name: projets, label: Lien Projets, component: texte }
+          - { name: parcours, label: Lien Parcours, component: texte }
+          - { name: aPropos, label: Lien À propos, component: texte }
+          - { name: contact, label: Lien Contact, component: texte }
+          - { name: boutonContact, label: Bouton de contact, component: texte }
+          - { name: themeClair, label: Bouton de thème (lecteurs d'écran), component: texte }
+      - name: hero
+        label: Hero
+        type: object
+        fields:
+          - { name: libelle, label: Nom de la section (lecteurs d'écran), component: texte }
+          - { name: boutonProjets, label: Bouton vers les projets, component: texte }
+          - { name: boutonCv, label: Bouton du CV, component: texte }
+      - name: aLaUne
+        label: Projet à la une
+        type: object
+        fields:
+          - { name: surtitre, label: Surtitre, component: texte }
+          - { name: etudeDeCas, label: Libellé du lien Étude de cas, component: texte }
+          - { name: code, label: Libellé du lien Code, component: texte }
+          - { name: video, label: Libellé du lien Vidéo, component: texte }
+      - name: projets
+        label: Autres projets
+        type: object
+        fields:
+          - { name: surtitre, label: Surtitre, component: texte }
+          - { name: titre, label: Titre, component: texte }
+      - name: contact
+        label: Contact
+        type: object
+        fields:
+          - { name: surtitre, label: Surtitre, component: texte }
+          - { name: titre, label: Titre, component: texte }
+          - { name: texte, label: Disponibilité, component: paragraphe }
+          - { name: boutonEmail, label: Bouton email, component: texte }
+      - name: piedDePage
+        label: Pied de page
+        type: object
+        fields:
+          - { name: libelle, label: Nom de la navigation (lecteurs d'écran), component: texte }
+          - { name: phraseTitre, label: Titre de la phrase, component: texte }
+          - { name: phrase, label: En une phrase, component: paragraphe }
+          - { name: surLaPageTitre, label: Titre des liens de la page, component: texte }
+          - { name: ailleursTitre, label: Titre des liens externes, component: texte }
+          - { name: contactTitre, label: Titre du contact, component: texte }
+          - { name: cvLibelle, label: Libellé du CV, component: texte }
+          - { name: hautDePage, label: Lien Haut de page, component: texte }
+          - { name: signature, label: Signature après le copyright, component: texte }
+          - { name: mentionsLegales, label: Lien Mentions légales, component: texte }
+
+  - name: parcours
+    label: Parcours
+    type: file
+    path: src/content/parcours.json
+    format: json
+    fields:
+      - { name: surtitre, label: Surtitre, component: texte }
+      - { name: titre, label: Titre, component: texte }
+      - { name: aujourdhui, label: Mot pour « aujourd'hui » (fin vide), component: texte }
+      - { name: boutonCv, label: Bouton du CV, component: texte }
+      - name: experience
+        label: Expérience
+        type: object
+        fields:
+          - { name: titre, label: Titre du tableau, component: texte }
+          - name: colonnes
+            label: En-têtes de colonnes
+            type: object
+            fields:
+              - { name: periode, label: Période, component: texte }
+              - { name: structure, label: Structure, component: texte }
+              - { name: role, label: Rôle, component: texte }
+              - { name: stack, label: Stack, component: texte }
+          - name: items
+            label: Expériences
+            type: object
+            list: { min: 1, collapsible: { collapsed: true, summary: "{fields.structure} ({fields.debut})" } }
+            description: Triées automatiquement de la plus récente à la plus ancienne.
+            fields:
+              - { name: debut, label: Année de début, component: annee }
+              - { name: fin, label: Année de fin (vide = aujourd'hui), type: number, options: { min: 1900, max: 2100 } }
+              - { name: structure, label: Structure, component: texte }
+              - { name: intitule, label: Intitulé du poste, component: texte }
+              - { name: lieu, label: Lieu, component: texte }
+              - { name: contrat, label: Contrat (facultatif), type: string, pattern: { regex: "^[^\\[\\]]*$", message: "Retirez les crochets [ ]." } }
+              - { name: description, label: Ce que j'y fais, component: paragraphe }
+              - { name: stack, label: Stack, component: texte, list: { min: 1 } }
+      - name: formation
+        label: Formation
+        type: object
+        fields:
+          - { name: titre, label: Titre du tableau, component: texte }
+          - name: colonnes
+            label: En-têtes de colonnes
+            type: object
+            fields:
+              - { name: periode, label: Période, component: texte }
+              - { name: diplome, label: Diplôme, component: texte }
+              - { name: parcours, label: Parcours, component: texte }
+          - name: items
+            label: Formations
+            type: object
+            list: { min: 1, collapsible: { collapsed: true, summary: "{fields.diplome}" } }
+            description: Triées automatiquement de la plus récente à la plus ancienne.
+            fields:
+              - { name: debut, label: Année de début, component: annee }
+              - { name: fin, label: Année de fin, component: annee }
+              - { name: diplome, label: Diplôme, component: texte }
+              - { name: ecole, label: École, component: texte }
+              - { name: parcours, label: Parcours, component: paragraphe }
+
+  - name: apropos
+    label: À propos
+    type: file
+    path: src/content/apropos.json
+    format: json
+    fields:
+      - { name: surtitre, label: Surtitre, component: texte }
+      - { name: titre, label: Titre, component: texte }
+      - name: etapes
+        label: Les trois étapes
+        type: object
+        list: { min: 3, max: 3 }
+        fields:
+          - { name: periode, label: Période, component: texte }
+          - { name: titre, label: Titre, component: texte }
+          - { name: texte, label: Texte, component: paragraphe }
+          - { name: tags, label: Tags, component: texte, list: true, required: false }
+      - name: bio
+        label: Bio
+        type: object
+        fields:
+          - { name: accroche, label: Accroche (mise en avant), component: texte }
+          - { name: texte, label: Suite, component: paragraphe }
+      - name: tuiles
+        label: Tuiles
+        type: object
+        list: { min: 1, collapsible: { collapsed: true, summary: "{fields.titre}" } }
+        fields:
+          - { name: kicker, label: Kicker, component: texte }
+          - { name: titre, label: Titre, component: texte }
+          - { name: texte, label: Texte, component: paragraphe }
+          - { name: tags, label: Tags, component: texte, list: true, required: false }
+          - { name: primary, label: Mise en avant (une seule tuile, pleine largeur), type: boolean }
+
+  - name: projets
+    label: Projets
+    type: collection
+    path: src/content/projets
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      fields: [titre, featured, ordre]
+    fields:
+      - name: featured
+        label: Projet à la une
+        type: boolean
+        description: Un seul projet à la une. Les champs « À la une » ne servent qu'à lui ; les champs « Carte » qu'aux autres.
+      - name: titre
+        label: Titre
+        component: texte
+        description: "À la une : début du titre (ex. « LED Tristan, »). Carte : nom en kebab-case (ex. reco-streaming)."
+      - name: body
+        label: Description
+        type: rich-text
+        required: true
+        options: { format: markdown, media: false }
+      - { name: ordre, label: "Carte : ordre d'affichage", type: number, options: { min: 0 } }
+      - { name: surtitre, label: "Carte : surtitre", component: texte, required: false }
+      - { name: resultat, label: "Carte : pastille résultat", component: texte, required: false }
+      - name: couverture
+        label: "Carte : illustration"
+        type: select
+        options:
+          values: [reco, network, bars, bolt, chat, doc, scatter, mail]
+      - { name: couvertureAlt, label: "Carte : description de l'illustration", component: texte, required: false }
+      - { name: lien, label: "Carte : lien (facultatif)", component: lien, required: false }
+      - { name: titreAccent, label: "À la une : fin du titre, en vert", component: texte, required: false }
+      - name: chiffres
+        label: "À la une : chiffres clés"
+        type: object
+        list: true
+        fields:
+          - { name: valeur, label: Valeur, component: texte }
+          - { name: libelle, label: Libellé, component: texte }
+      - { name: stack, label: "À la une : stack", component: texte, list: true, required: false }
+      - name: liens
+        label: "À la une : liens (facultatifs)"
+        type: object
+        description: Ne pas renseigner le code tant que l'historique Git du dépôt contient le mot de passe Wi-Fi.
+        fields:
+          - { name: etudeDeCas, label: Étude de cas, component: lien, required: false }
+          - { name: code, label: Code, component: lien, required: false }
+          - { name: video, label: Vidéo, component: lien, required: false }
+      - name: graphe
+        label: "À la une : graphe d'effet"
+        type: object
+        fields:
+          - { name: legende, label: Légende, component: texte, required: false }
+          - { name: description, label: Description (lecteurs d'écran), component: paragraphe, required: false }
+          - name: noeuds
+            label: Nœuds (5, dans l'ordre du flux)
+            type: object
+            list: { min: 5, max: 5 }
+            fields:
+              - { name: categorie, label: Catégorie, component: texte }
+              - { name: titre, label: Titre, component: texte }
+              - { name: detail, label: Détail (facultatif), component: texte, required: false }
+              - { name: spectre, label: Mini-spectre, type: boolean }
+      - name: spectre
+        label: "À la une : spectre"
+        type: object
+        fields:
+          - { name: graves, label: Légende des graves, component: texte, required: false }
+          - { name: centre, label: Légende centrale, component: texte, required: false }
+          - { name: aigus, label: Légende des aigus, component: texte, required: false }
+          - { name: legende, label: Légende de la figure, component: texte, required: false }
+          - { name: debit, label: Débit, component: texte, required: false }
+      - name: etapes
+        label: "À la une : étapes"
+        type: object
+        list: true
+        fields:
+          - { name: titre, label: Titre, component: texte }
+          - { name: texte, label: Texte, component: paragraphe }
+          - { name: stack, label: Stack, component: texte }
+
+  - name: mentions-legales
+    label: Mentions légales
+    type: file
+    path: src/content/pages/mentions-legales.md
+    format: yaml-frontmatter
+    fields:
+      - { name: titre, label: Titre, component: texte }
+      - { name: description, label: Description, component: paragraphe }
+      - { name: body, label: Contenu, type: rich-text, required: true, options: { format: markdown, media: false } }
