@@ -1,0 +1,50 @@
+---
+import { PIXEL_GRID } from "../../lib/design-tokens";
+import { revealDelays, spriteGeometry } from "../../lib/pixel-art";
+import type { Sprite } from "../../lib/sprites";
+
+interface Props {
+  sprite: Sprite;
+  /** Figure porteuse de sens : décrite aux lecteurs d'écran. Sinon, décorative (aria-hidden). */
+  label?: string;
+  /** Pixels allumés un à un quand l'illustration entre à l'écran. */
+  reveal?: boolean;
+  seed?: number;
+  /** signal : vert sur fond de page ; inverse : couleur du fond, sur une carte signal-fill. */
+  tone?: "signal" | "inverse";
+  class?: string;
+}
+
+const REVEAL_DURATION_MS = 900;
+
+const { sprite, label, reveal = false, seed = 3, tone = "signal", class: className } = Astro.props;
+const { width, height, cells } = spriteGeometry(sprite, PIXEL_GRID);
+const delays = reveal ? revealDelays(cells.length, seed, REVEAL_DURATION_MS) : [];
+const a11y = label ? { role: "img" as const, "aria-label": label } : { "aria-hidden": "true" as const };
+---
+
+<svg
+  class:list={[
+    "block shrink-0 overflow-visible fill-current",
+    { signal: "text-signal", inverse: "text-on-signal-fill" }[tone],
+    reveal && "px-reveal",
+    className,
+  ]}
+  width={width}
+  height={height}
+  viewBox={`0 0 ${width} ${height}`}
+  shape-rendering="crispEdges"
+  {...a11y}
+>
+  {
+    cells.map((cell, i) => (
+      <rect
+        x={cell.x}
+        y={cell.y}
+        width={PIXEL_GRID.unit}
+        height={PIXEL_GRID.unit}
+        style={reveal ? `animation-delay: ${delays[i]}ms` : undefined}
+      />
+    ))
+  }
+</svg>

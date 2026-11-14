@@ -1,0 +1,47 @@
+---
+import type { Sprite } from "../../lib/sprites";
+import Eyebrow from "./Eyebrow.astro";
+import PixelArt from "./PixelArt.astro";
+import Tag from "./Tag.astro";
+
+/**
+ * Carte projet pleine (ProjectCard variant « primary » de Signal) : fond signal-fill,
+ * tout ce qui est posé dessus prend la couleur du fond de page.
+ * Avec href, la carte entière est un lien ; sinon un <article>. La description vient du slot.
+ */
+interface Props {
+  slug: string;
+  eyebrow: string;
+  result: string;
+  cover: Sprite;
+  coverLabel: string;
+  /** Graine de l'apparition des pixels de la couverture. */
+  seed: number;
+  href?: string;
+}
+
+const { slug, eyebrow, result, cover, coverLabel, seed, href } = Astro.props;
+const Root = href ? "a" : "article";
+---
+
+<Root
+  href={href}
+  class="group box-border flex h-full flex-col overflow-hidden rounded-lg border border-signal-fill bg-signal-fill text-on-signal-fill no-underline"
+>
+  <div class="relative flex h-60 items-center justify-center border-b border-on-signal-fill">
+    <PixelArt sprite={cover} label={coverLabel} reveal seed={seed} tone="inverse" />
+    <span class="absolute top-4 left-4"><Tag tone="solid-inverse">{result}</Tag></span>
+  </div>
+  <div class="flex flex-col gap-3 p-6">
+    <Eyebrow tone="inherit">{eyebrow}</Eyebrow>
+    <h3
+      class:list={[
+        "font-mono text-slug font-medium",
+        href && "group-hover:underline group-hover:decoration-2 group-hover:underline-offset-6",
+      ]}
+    >
+      /{slug}
+    </h3>
+    <div class="text-body-sm"><slot /></div>
+  </div>
+</Root>

@@ -77,6 +77,10 @@ describe("email", () => {
 });
 
 describe("file", () => {
+  it("nomme la racine du projet quand le fichier y manque", () => {
+    expect(strict.file("").safeParse("/absent.pdf").error?.issues[0]?.message).toMatch(/sous la racine/);
+  });
+
   it("accepte un fichier qui existe sous la racine indiquée", () => {
     expect(strict.file("").parse("/package.json")).toBe("/package.json");
   });
@@ -84,7 +88,7 @@ describe("file", () => {
   it("refuse un fichier absent", () => {
     const result = strict.file("public").safeParse("/documents/absent.pdf");
     expect(result.success).toBe(false);
-    expect(result.error?.issues[0]?.message).toMatch(/introuvable/);
+    expect(result.error?.issues[0]?.message).toMatch(/introuvable sous public/);
   });
 
   it("n'accepte [cv] qu'en mode permissif", () => {

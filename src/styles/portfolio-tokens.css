@@ -5,10 +5,11 @@
  */
 :root {
   /* Mono — interface */
-  --type-eyebrow: 12px; --type-eyebrow-lh: 16px; --tracking-eyebrow: 0.1em;
+  --type-mono-xs: 12px; --type-mono-xs-lh: 16px; --tracking-eyebrow: 0.1em;
   --type-mono-sm: 13px; --type-mono-sm-lh: 20px;
   --type-label: 14px; --type-label-lh: 20px;
   --type-cta: 15px; --type-cta-lh: 20px;
+  --type-slug: 24px; --type-slug-lh: 30px;
   --type-mail: clamp(20px, 5vw, 32px); --type-mail-lh: 1.25;
 
   /* Sans — texte */

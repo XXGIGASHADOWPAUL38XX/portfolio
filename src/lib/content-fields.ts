@@ -35,7 +35,7 @@ export function createFields({ allowPlaceholders, projectRoot }: FieldOptions) {
     if (allowPlaceholders) return z.union([schema, placeholder]);
     return z
       .unknown()
-      .refine((value) => !isPlaceholder(value), { message: BRACKET_MESSAGE, abort: true })
+      .refine((value) => !isPlaceholder(value), { message: BRACKET_MESSAGE })
       .pipe(schema);
   }
 

@@ -1,0 +1,21 @@
+---
+interface Props {
+  /** neutral : sur le fond de page ; outline-inverse / solid-inverse : sur une surface signal-fill. */
+  tone?: "neutral" | "outline-inverse" | "solid-inverse";
+}
+
+const { tone = "neutral" } = Astro.props;
+
+const TONES = {
+  neutral: "border-line bg-surface-raised text-ink-muted",
+  "outline-inverse": "border-on-signal-fill text-on-signal-fill",
+  "solid-inverse": "border-on-signal-fill bg-on-signal-fill text-signal-fill",
+} as const;
+---
+
+<span
+  class:list={[
+    "inline-flex h-6 items-center rounded-pill border px-3 font-mono text-mono-xs whitespace-nowrap",
+    TONES[tone],
+  ]}><slot /></span
+>
