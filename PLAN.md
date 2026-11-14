@@ -68,3 +68,21 @@ dans `main` une fois ses critères de fin vérifiés.
 - Objectif : workflow GitHub Actions (build strict, `[`/`href="#"`, liens internes, axe, poids JS,
   domaines tiers) ; README (lancer, éditer via Pages CMS, déployer sur Coolify).
 - Fini quand : la CI locale passe en mode placeholders ; checklist « Définition de fini » cochée avec preuves.
+
+## Définition de fini — état au 15/11/2026
+
+| Point de la note | État | Preuve (commande → résultat) |
+| --- | --- | --- |
+| Fidèle à la maquette à 1440, 900 et 390 px, en sombre et en clair | ✅ | `node scripts/screenshots.mjs` sur la maquette rendue en local et sur le site, comparaison section par section : mêmes grilles, tailles et couleurs (ex. séparateur onde : SVG 1158 × 128 dans les deux). Écarts voulus : pas de carte `/assistant-docs` ni de « Tous les projets » (notes dev-projets), pas de boutons « Étude de cas » / « Code » tant que les liens sont vides, paragraphe contact sans hauteur fixe (note dev-contact), bascule de thème ajoutée (note dev-ux). |
+| Le build échoue si un champ requis manque | ✅ | Champ `structure` retiré de `parcours.json` → `npm run build:draft` : `InvalidContentEntryDataError … structure: Required`, code 1. |
+| Aucun « [ » ni `href="#"` dans le HTML généré, vérifié en CI | ✅ outil · ⏳ contenu | `npm run verify:draft` → « aucun problème », 0 `href="#"`. `npm run build` → code 1 et `npm run verify` liste les 12 contenus [à remplacer] : attendu tant que Tristan ne les a pas remplis (job CI « publication »). |
+| 0 erreur axe ; contrastes AA ; tout se fait au clavier | ✅ | `npm run e2e` → 18 passed : axe (WCAG 2.2 AA + best-practice, dont color-contrast) sans violation sur `/` et `/mentions-legales/`, sombre et clair, 1440 et 390 px ; chaque élément atteint au Tab avec un focus visible ; lien d'évitement. |
+| Lighthouse ≥ 95 sur les 4 axes | ✅ | `npx @lhci/cli@0.16.1 collect --staticDistDir=./dist …` puis `node scripts/check-lighthouse.ts` → 100 / 100 / 100 / 100 sur les deux pages. |
+| JS client < 5 ko | ✅ | `npm run verify:draft` → « 1743 octets de JS client » par page. |
+| Aucune requête vers un domaine tiers | ✅ | e2e « aucune requête vers un domaine tiers » (toutes les requêtes sur l'origine du site) ; `verify` : aucune ressource externe dans `dist/`. |
+| `.pages.yml` couvre tous les champs | ✅ | `npm test` → `tests/pages-cms.test.ts` compare les chemins Zod et YAML pour les 5 entrées ; le test échoue si un champ est retiré. |
+| README : lancer, éditer via Pages CMS, déployer | ✅ | `README.md`, sections « Lancer le projet », « Éditer le contenu avec Pages CMS », « Déployer sur Coolify ». |
+
+Qualité du code : `npm test` → 103 tests ; `npm run check` → 0 erreur ; crapper : CRAP max 9 ;
+mutator : 0 survivant (les seuls sites non couverts sont dans les scripts CLI exécutés par la CI) ;
+dryer : aucun doublon.
