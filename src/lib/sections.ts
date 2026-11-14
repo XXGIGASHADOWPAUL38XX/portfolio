@@ -18,16 +18,16 @@ export function sectionNumber(id: SectionId): string {
 export const anchor = (id: SectionId | typeof TOP_ID, from: "home" | "page" = "home") =>
   `${from === "home" ? "" : "/"}#${id}`;
 
-/** Liens de navigation vers les sections, dans l'ordre de la page. */
+/** Liens de navigation, dans l'ordre de la page ; `sections` : les sections où le lien est « courant ». */
 export function navLinks(
   labels: Record<"projets" | "parcours" | "aPropos" | "contact", string>,
   from: "home" | "page" = "home",
-): { label: string; href: string }[] {
+): { label: string; href: string; sections: readonly SectionId[] }[] {
   return [
-    { label: labels.projets, href: anchor("a-la-une", from) },
-    { label: labels.parcours, href: anchor("parcours", from) },
-    { label: labels.aPropos, href: anchor("a-propos", from) },
-    { label: labels.contact, href: anchor("contact", from) },
+    { label: labels.projets, href: anchor("a-la-une", from), sections: ["a-la-une", "projets"] },
+    { label: labels.parcours, href: anchor("parcours", from), sections: ["parcours"] },
+    { label: labels.aPropos, href: anchor("a-propos", from), sections: ["a-propos"] },
+    { label: labels.contact, href: anchor("contact", from), sections: ["contact"] },
   ];
 }
 

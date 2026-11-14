@@ -31,10 +31,10 @@ describe("navLinks", () => {
 
   it("mène « Projets » au projet à la une et suit l'ordre de la page", () => {
     expect(navLinks(labels)).toEqual([
-      { label: "Projets", href: "#a-la-une" },
-      { label: "Parcours", href: "#parcours" },
-      { label: "À propos", href: "#a-propos" },
-      { label: "Contact", href: "#contact" },
+      { label: "Projets", href: "#a-la-une", sections: ["a-la-une", "projets"] },
+      { label: "Parcours", href: "#parcours", sections: ["parcours"] },
+      { label: "À propos", href: "#a-propos", sections: ["a-propos"] },
+      { label: "Contact", href: "#contact", sections: ["contact"] },
     ]);
   });
 

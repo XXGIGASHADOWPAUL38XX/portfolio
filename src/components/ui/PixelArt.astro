@@ -10,8 +10,8 @@ interface Props {
   /** Pixels allumés un à un quand l'illustration entre à l'écran. */
   reveal?: boolean;
   seed?: number;
-  /** signal : vert sur fond de page ; inverse : couleur du fond, sur une carte signal-fill. */
-  tone?: "signal" | "inverse";
+  /** signal : vert sur fond de page ; inverse : couleur du fond, sur une carte signal-fill ; current : couleur du texte. */
+  tone?: "signal" | "inverse" | "current";
   class?: string;
 }
 
@@ -26,7 +26,7 @@ const a11y = label ? { role: "img" as const, "aria-label": label } : { "aria-hid
 <svg
   class:list={[
     "block shrink-0 overflow-visible fill-current",
-    { signal: "text-signal", inverse: "text-on-signal-fill" }[tone],
+    { signal: "text-signal", inverse: "text-on-signal-fill", current: undefined }[tone],
     reveal && "px-reveal",
     className,
   ]}
@@ -48,3 +48,40 @@ const a11y = label ? { role: "img" as const, "aria-label": label } : { "aria-hid
     ))
   }
 </svg>
+
+<style>
+  /* Apparition au scroll : chaque pixel s'allume d'un coup, à son délai. Activée par le script
+     du <head> seulement sans prefers-reduced-motion ; sans JS, tout reste affiché. */
+  @keyframes px-on {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  :global(html.px-motion) .px-reveal:not(.is-in) rect {
+    opacity: 0;
+  }
+
+  :global(html.px-motion) .px-reveal.is-in rect {
+    animation: px-on 1ms steps(1, end) both;
+  }
+</style>
+
+<script>
+  if (document.documentElement.classList.contains("px-motion")) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-in");
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.3 },
+    );
+    for (const art of document.querySelectorAll(".px-reveal")) observer.observe(art);
+  }
+</script>

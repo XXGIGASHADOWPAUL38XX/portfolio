@@ -4,9 +4,11 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description: string;
+  /** Libellé du lien d'évitement vers <main id="contenu">. */
+  skipLabel: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, skipLabel } = Astro.props;
 ---
 
 <!doctype html>
@@ -18,7 +20,8 @@ const { title, description } = Astro.props;
     <meta name="color-scheme" content="dark light" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
-    <!-- Avant tout rendu : thème choisi (localStorage), sinon préférence système. -->
+    <!-- Avant tout rendu : thème choisi (localStorage), sinon préférence système ;
+         animations des pixels seulement sans prefers-reduced-motion. -->
     <script is:inline>
       (() => {
         let theme = null;
@@ -29,10 +32,19 @@ const { title, description } = Astro.props;
           theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
         }
         document.documentElement.dataset.theme = theme;
+        if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          document.documentElement.classList.add("px-motion");
+        }
       })();
     </script>
   </head>
   <body class="min-h-screen overflow-x-hidden bg-bg font-sans text-ink">
+    <a
+      href="#contenu"
+      class="fixed top-4 left-4 z-20 -translate-y-24 rounded-pill bg-signal px-6 py-3 font-mono text-label text-on-signal no-underline focus-visible:translate-y-0"
+    >
+      {skipLabel}
+    </a>
     <slot />
   </body>
 </html>

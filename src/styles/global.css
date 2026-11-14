@@ -117,6 +117,7 @@
   --tracking-h2: var(--tracking-h2);
 
   --breakpoint-*: initial;
+  --breakpoint-2xs: 23.75rem;
   --breakpoint-xs: 40rem;
   --breakpoint-sm: 45rem;
   --breakpoint-md: 53.75rem;
