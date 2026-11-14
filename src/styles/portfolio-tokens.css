@@ -49,4 +49,8 @@
   --wire-gap: 38px;
   --wire-width: 48px;
   --table-min-width: 760px;
+  --column-period: 180px;
+  --column-entity: 300px;
+  --column-stack: 200px;
+  --card-min-width: 300px;
 }

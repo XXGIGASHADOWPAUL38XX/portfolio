@@ -1,14 +1,17 @@
 ---
 import NavBar from "../components/layout/NavBar.astro";
+import Career from "../components/sections/Career.astro";
 import FeaturedProject from "../components/sections/featured/FeaturedProject.astro";
 import Hero from "../components/sections/Hero.astro";
+import Projects from "../components/sections/Projects.astro";
 import Separator from "../components/ui/Separator.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getProjects, getSite } from "../lib/content";
+import { getParcours, getProjects, getSite } from "../lib/content";
 import { anchor } from "../lib/sections";
 
 const site = await getSite();
 const projects = await getProjects();
+const parcours = await getParcours();
 const { navigation } = site;
 
 const navLinks = [
@@ -30,5 +33,8 @@ const navLinks = [
     <Hero site={site} navLinks={navLinks} />
     <FeaturedProject project={projects.featured} labels={site.aLaUne} />
     <Separator variant="wave" />
+    <Projects projects={projects.others} labels={site.projets} />
+    <Career parcours={parcours} cv={site.liens.cv} />
+    <Separator variant="graph" />
   </main>
 </BaseLayout>

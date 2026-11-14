@@ -1,0 +1,80 @@
+---
+import type { Parcours, Site } from "../../lib/content";
+import { formatPeriod, isOngoing, sortByRecency } from "../../lib/parcours";
+import { sectionNumber } from "../../lib/sections";
+import Section from "../layout/Section.astro";
+import Button from "../ui/Button.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import TimelineTable from "../ui/TimelineTable.astro";
+
+/** 03 · Parcours : expériences et formations en deux tableaux, du plus récent au plus ancien. */
+interface Props {
+  parcours: Parcours;
+  cv: Site["liens"]["cv"];
+}
+
+const { parcours, cv } = Astro.props;
+const { experience, formation, aujourdhui } = parcours;
+const headingId = "parcours-titre";
+---
+
+<Section id="parcours" aria-labelledby={headingId}>
+  <SectionHeading number={sectionNumber("parcours")} eyebrow={parcours.surtitre} title={parcours.titre} id={headingId} />
+  <div class="flex flex-col gap-12">
+    <TimelineTable
+      id="parcours-experience"
+      title={experience.titre}
+      columns={[
+        { label: experience.colonnes.periode, width: "period" },
+        { label: experience.colonnes.structure, width: "entity" },
+        { label: experience.colonnes.role },
+        { label: experience.colonnes.stack, width: "stack" },
+      ]}
+    >
+      {
+        sortByRecency(experience.items).map((item) => (
+          <tr>
+            <td
+              class:list={["font-pixel text-pixel-period", isOngoing(item) ? "text-signal-text" : "text-ink"]}
+            >
+              {formatPeriod(item, aujourdhui)}
+            </td>
+            <td>
+              <span class="block text-entity font-semibold">{item.structure}</span>
+              <span class="mt-1 block font-mono text-mono-sm text-ink-muted">
+                {[item.intitule, item.lieu, item.contrat].filter(Boolean).join(" · ")}
+              </span>
+            </td>
+            <td class="text-body text-ink-muted">{item.description}</td>
+            <td class="font-mono text-mono-sm text-ink-subtle">{item.stack.join(" · ")}</td>
+          </tr>
+        ))
+      }
+    </TimelineTable>
+    <TimelineTable
+      id="parcours-formation"
+      title={formation.titre}
+      columns={[
+        { label: formation.colonnes.periode, width: "period" },
+        { label: formation.colonnes.diplome, width: "entity" },
+        { label: formation.colonnes.parcours },
+      ]}
+    >
+      {
+        sortByRecency(formation.items).map((item) => (
+          <tr>
+            <td class="font-pixel text-pixel-period text-ink">{formatPeriod(item, aujourdhui)}</td>
+            <td>
+              <span class="block text-entity font-semibold">{item.diplome}</span>
+              <span class="mt-1 block font-mono text-mono-sm text-ink-muted">{item.ecole}</span>
+            </td>
+            <td class="text-body text-ink-muted">{item.parcours}</td>
+          </tr>
+        ))
+      }
+    </TimelineTable>
+    <div>
+      <Button href={cv} variant="secondary" icon="arrow" download>{parcours.boutonCv}</Button>
+    </div>
+  </div>
+</Section>
