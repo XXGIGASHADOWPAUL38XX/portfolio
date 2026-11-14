@@ -1,0 +1,54 @@
+# Deux jobs :
+# - « qualite » vérifie le code et le rendu sur un build de brouillon (contenus [à remplacer] tolérés) ;
+# - « publication » rejoue le build de production : il reste rouge tant qu'un contenu est à remplacer,
+#   exactement comme le build de Coolify, qui refuse alors de déployer.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  qualite:
+    name: Tests, typage, accessibilité, Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build:draft
+      - name: Liens, ressources tierces et poids du JS
+        run: npm run verify:draft
+      - run: npx playwright install --with-deps chromium
+      - name: axe, clavier, thème, domaines tiers
+        run: npm run e2e
+      - name: Lighthouse
+        run: >-
+          npx --yes @lhci/cli@0.16.1 collect --staticDistDir=./dist
+          --url=http://localhost/index.html --url=http://localhost/mentions-legales/index.html
+          --numberOfRuns=1
+      - name: Lighthouse ≥ 95 sur les 4 axes
+        run: node scripts/check-lighthouse.ts
+
+  publication:
+    name: Build de production (aucun contenu à remplacer)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Aucun « [ » ni href="#" dans le HTML généré
+        run: npm run verify

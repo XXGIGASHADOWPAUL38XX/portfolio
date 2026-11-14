@@ -34,3 +34,4 @@ target/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+/.lighthouseci/

@@ -52,3 +52,6 @@ export const SEPARATOR_BINARY: readonly Sprite[] = [
 
 /** Icône de la bascule de thème (3 × 3 pixels) : un éclat de lumière. */
 export const THEME_ICON: Sprite = [".#.", "###", ".#."];
+
+/** Favicon : un « T » en pixels. */
+export const FAVICON: Sprite = ["#####", "..#..", "..#..", "..#..", "..#.."];
