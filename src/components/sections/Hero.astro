@@ -1,11 +1,12 @@
 ---
 import { join } from "node:path";
 import { isPlaceholder } from "../../lib/content-fields";
-import { loadPortraitSprite } from "../../lib/portrait";
+import { loadPortraitAscii } from "../../lib/portrait";
 import { anchor, TOP_ID } from "../../lib/sections";
 import { CORNER_BOTTOM_RIGHT, CORNER_TOP_LEFT } from "../../lib/sprites";
 import type { Site } from "../../lib/content";
 import SubNav from "../layout/SubNav.astro";
+import AsciiArt from "../ui/AsciiArt.astro";
 import Button from "../ui/Button.astro";
 import PixelArt from "../ui/PixelArt.astro";
 import PixelLabel from "../ui/PixelLabel.astro";
@@ -16,14 +17,14 @@ interface Props {
   navLinks: { label: string; href: string }[];
 }
 
-/** Grille du portrait : 41 × 47 pixels tiennent dans le cadre de 480 px de haut. */
-const PORTRAIT_GRID = { columns: 41, rows: 47 };
+/** Grille du portrait : 68 × 47 caractères (408 × 470 unités) tiennent dans le cadre de 480 px de haut. */
+const PORTRAIT_GRID = { columns: 68, rows: 47 };
 
 const { site, navLinks } = Astro.props;
 const { identite, liens, hero, navigation } = site;
 const portrait = isPlaceholder(identite.photo)
   ? null
-  : await loadPortraitSprite(join(process.cwd(), identite.photo), PORTRAIT_GRID);
+  : await loadPortraitAscii(join(process.cwd(), identite.photo), PORTRAIT_GRID);
 ---
 
 <section id={TOP_ID} aria-label={hero.libelle} class="relative box-border overflow-hidden px-6 py-(--hero-padding)">
@@ -56,7 +57,7 @@ const portrait = isPlaceholder(identite.photo)
         <PixelArt sprite={CORNER_BOTTOM_RIGHT} class="absolute -right-3 -bottom-3" />
         {
           portrait ? (
-            <PixelArt sprite={portrait} label={identite.photoAlt} class="h-full w-auto max-w-full" />
+            <AsciiArt lines={portrait} label={identite.photoAlt} class="h-full w-auto max-w-full" />
           ) : (
             <p class="max-w-67 p-6 text-center font-mono text-mono-sm text-ink-subtle">{identite.photo}</p>
           )

@@ -1,7 +1,19 @@
 import sharp from "sharp";
-import { SHADES, type Sprite } from "./sprites";
 
 const WHITE = 255;
+
+/**
+ * Caractères pour les tons du plus sombre au plus clair. Comme de l'encre, les zones sombres de la photo
+ * (cheveux, yeux, vêtement) prennent les caractères denses et le fond clair s'efface : sans cela, le mur
+ * derrière le visage, plus clair que la peau, serait la zone la plus dense du portrait.
+ */
+export const ASCII_RAMP = "@%#*+=-:. ";
+
+/**
+ * Proportions d'une cellule de caractère en JetBrains Mono : chasse de 0,6 em, interligne de 1 em.
+ * Partagées par le recadrage de la photo et le viewBox du rendu, pour que le visage ne soit pas étiré.
+ */
+export const ASCII_CELL = { width: 6, height: 10 } as const;
 
 /** Diffusion de Floyd–Steinberg : (dx, dy, poids sur 16) vers les voisins pas encore traités. */
 const DIFFUSION = [
@@ -13,10 +25,10 @@ const DIFFUSION = [
 
 /**
  * Tramage d'une image en niveaux de gris (une valeur 0–255 par pixel, ligne par ligne) sur une palette
- * de caractères rangés du plus sombre au plus clair (« .# » : 1 bit ; SHADES : nuances de vert).
- * Les zones claires deviennent des pixels allumés, comme une photo en vert signal sur noir.
+ * de caractères rangés du plus sombre au plus clair (« .# » : 1 bit ; ASCII_RAMP : portrait ASCII).
+ * Les zones claires prennent les derniers caractères de la palette.
  */
-export function ditherToSprite(gray: Uint8Array, width: number, height: number, palette: string): Sprite {
+export function ditherToText(gray: Uint8Array, width: number, height: number, palette: string): string[] {
   if (gray.length !== width * height) {
     throw new Error(`Le tampon (${gray.length}) ne correspond pas aux dimensions ${width}×${height}.`);
   }
@@ -41,13 +53,18 @@ export function ditherToSprite(gray: Uint8Array, width: number, height: number, 
   );
 }
 
-/** Lit la photo, la recadre sur la grille de pixels du portrait et la trame en nuances de vert. */
-export async function loadPortraitSprite(path: string, grid: { columns: number; rows: number }): Promise<Sprite> {
-  const { data, info } = await sharp(path)
-    .resize(grid.columns, grid.rows, { fit: "cover", position: "attention" })
+/** Lit la photo, la recadre aux proportions de la grille de caractères et la trame avec ASCII_RAMP. */
+export async function loadPortraitAscii(path: string, grid: { columns: number; rows: number }): Promise<string[]> {
+  // Recadrage en pixels carrés à la taille réelle de la grille, puis une valeur par caractère.
+  const framed = await sharp(path)
+    .resize(grid.columns * ASCII_CELL.width, grid.rows * ASCII_CELL.height, { fit: "cover", position: "attention" })
     .grayscale()
     .normalise()
+    .toBuffer();
+  const { data, info } = await sharp(framed)
+    .resize(grid.columns, grid.rows, { fit: "fill" })
+    .grayscale()
     .raw()
     .toBuffer({ resolveWithObject: true });
-  return ditherToSprite(new Uint8Array(data), info.width, info.height, SHADES);
+  return ditherToText(new Uint8Array(data), info.width, info.height, ASCII_RAMP);
 }

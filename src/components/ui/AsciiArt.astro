@@ -1,0 +1,43 @@
+---
+import { ASCII_CELL } from "../../lib/portrait";
+
+interface Props {
+  /** Une chaîne par rangée, toutes de même longueur. */
+  lines: readonly string[];
+  /** Figure porteuse de sens : décrite aux lecteurs d'écran, qui n'épellent pas les caractères. */
+  label: string;
+  class?: string;
+}
+
+/** Ligne de base dans la cellule : le bas des caractères à 80 % de l'interligne. */
+const BASELINE = 0.8;
+
+const { lines, label, class: className } = Astro.props;
+const columns = Math.max(0, ...lines.map((line) => line.length));
+const width = columns * ASCII_CELL.width;
+const height = lines.length * ASCII_CELL.height;
+---
+
+<svg
+  class:list={["block shrink-0 fill-current font-mono text-signal", className]}
+  width={width}
+  height={height}
+  viewBox={`0 0 ${width} ${height}`}
+  role="img"
+  aria-label={label}
+>
+  <text font-size={ASCII_CELL.height} xml:space="preserve" style="white-space: pre" aria-hidden="true">
+    {
+      lines.map((line, i) => (
+        <tspan
+          x="0"
+          y={(i + BASELINE) * ASCII_CELL.height}
+          textLength={line.length * ASCII_CELL.width}
+          lengthAdjust="spacing"
+        >
+          {line}
+        </tspan>
+      ))
+    }
+  </text>
+</svg>
