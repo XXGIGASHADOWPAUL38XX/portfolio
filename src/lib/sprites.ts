@@ -1,8 +1,11 @@
 /**
- * Sprites pixel : une ligne par rangée, « # » = pixel allumé, « . » = éteint.
+ * Sprites pixel : une ligne par rangée, « # » = pixel allumé, « . » = éteint (nuances : voir SHADES).
  * Repris tels quels de la maquette (renderVals() de Main) et de la bibliothèque PixelArt de Signal.
  */
 export type Sprite = readonly string[];
+
+/** Nuances d'un pixel, de l'éteint au plein : « : » et « + » allument le vert à 1/3 et 2/3. */
+export const SHADES = ".:+#";
 
 /** Illustrations de couverture des cartes projet, choisies dans Pages CMS. */
 export const COVER_SPRITES = {

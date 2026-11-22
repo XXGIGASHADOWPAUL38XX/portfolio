@@ -57,8 +57,8 @@ describe("spriteGeometry", () => {
   it("place un carré par pixel allumé, au pas de la grille", () => {
     const geometry = spriteGeometry(["#.", ".#"], { unit: 8, pitch: 10 });
     expect(geometry.cells).toEqual([
-      { x: 0, y: 0 },
-      { x: 10, y: 10 },
+      { x: 0, y: 0, shade: 1 },
+      { x: 10, y: 10, shade: 1 },
     ]);
   });
 
@@ -72,6 +72,15 @@ describe("spriteGeometry", () => {
     const geometry = spriteGeometry(["#", "# #"], { unit: 8, pitch: 10 });
     expect(geometry.width).toBe(28);
     expect(geometry.cells).toHaveLength(3);
+  });
+
+  it("donne à chaque nuance son intensité et n'affiche pas les pixels éteints", () => {
+    const geometry = spriteGeometry(["#+:."], { unit: 8, pitch: 10 });
+    expect(geometry.cells).toEqual([
+      { x: 0, y: 0, shade: 1 },
+      { x: 10, y: 0, shade: 2 / 3 },
+      { x: 20, y: 0, shade: 1 / 3 },
+    ]);
   });
 
   it("rend un sprite vide de taille nulle", () => {

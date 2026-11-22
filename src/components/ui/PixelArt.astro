@@ -43,6 +43,7 @@ const a11y = label ? { role: "img" as const, "aria-label": label } : { "aria-hid
         y={cell.y}
         width={PIXEL_GRID.unit}
         height={PIXEL_GRID.unit}
+        fill-opacity={cell.shade < 1 ? cell.shade.toFixed(3) : undefined}
         style={reveal ? `animation-delay: ${delays[i]}ms` : undefined}
       />
     ))
