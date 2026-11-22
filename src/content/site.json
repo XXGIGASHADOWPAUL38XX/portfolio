@@ -11,15 +11,21 @@
     "accroche": "en freelance à Lyon. Je travaille en Python sur les algorithmes de recommandation de plateformes de streaming, pour Bedrock Streaming.",
     "legende": "Lyon · 2026",
     "lieu": "Lyon",
-    "modeTravail": "[remote / hybride]",
+    "modeTravail": "hybride",
     "email": "gnttristan@gmail.com",
-    "photo": "[photo de Tristan, traitée en 1 bit : pixels verts sur fond noir]",
+    "photo": "/src/assets/media/image.png",
     "photoAlt": "Portrait de Tristan Ginet"
   },
   "liens": {
-    "github": { "libelle": "GitHub", "url": "[URL du profil GitHub]" },
-    "linkedin": { "libelle": "LinkedIn", "url": "[URL du profil LinkedIn]" },
-    "cv": "[CV]"
+    "github": {
+      "libelle": "GitHub",
+      "url": "https://github.com/XXGIGASHADOWPAUL38XX"
+    },
+    "linkedin": {
+      "libelle": "LinkedIn",
+      "url": "https://www.linkedin.com/in/tristan-ginet-95268b237/"
+    },
+    "cv": "/documents/CV_TRISTAN_GINET.pdf"
   },
   "navigation": {
     "libelle": "Navigation principale",
